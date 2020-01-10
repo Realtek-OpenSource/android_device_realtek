@@ -1,0 +1,6 @@
+service ALSADaemon /vendor/bin/ALSADaemon
+    class core
+    user root
+    group root media graphics
+    oneshot
+

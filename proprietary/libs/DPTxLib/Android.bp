@@ -1,0 +1,7 @@
+cc_library_shared {
+    srcs: ["DPTxLib.cpp"],
+    shared_libs: ["libutils"] + ["liblog"] + ["vendor.realtek.dptxutil.provider@1.0"] + ["libhidlbase"] + ["libhidltransport"],
+    include_dirs: ["system/core/libutils/include/utils"] + ["device/realtek/proprietary/libs/HDMILib"],
+    name: "libDPTxLib",
+    vendor_available: true,
+}

@@ -1,0 +1,25 @@
+allow init configfs:file { write create };
+allow init debugfs_tracing:file write;
+allow init kernel:system module_request;
+allow init ram_device:blk_file write;
+allow init self:capability sys_module;
+allow init sysfs:file create;
+allow init sysfs_devices_system_cpu:file create;
+allow init tmpfs:lnk_file create;
+allow init vendor_file:system module_load;
+allow init configfs:lnk_file create;
+allow init vendor_file:file execute;
+allow init recovery:process { siginh rlimitinh noatsecure transition };
+allow init sysfs_zram:file { rw_file_perms create_file_perms };
+allow init { userdata_block_device cache_block_device }:blk_file rw_file_perms;
+#allow init sysfs_zram:dir r_dir_perms;
+
+
+### Android P never allow  ###
+#allow init cgroup:file create;
+#allow init sysfs_devices_system_cpu:dir add_name;
+#allow init sysfs_devices_system_cpu:dir write;
+#allow init sysfs_zram:dir rw_dir_perms;
+#allow init sysfs:dir add_name;
+#allow init proc:file { open setattr write };
+

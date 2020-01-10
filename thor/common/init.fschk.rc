@@ -1,0 +1,18 @@
+on init
+    start mk_emmc_swap
+    #start ext4resize
+    #wait /rtk/ext4resize.done 5
+
+service mk_emmc_swap /vendor/bin/mk_emmc_swap.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+
+service ext4resize /vendor/bin/ext4resize.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot

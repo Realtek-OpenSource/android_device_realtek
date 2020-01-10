@@ -1,0 +1,117 @@
+PLATFORM_LIB_SRC_PATH=../../../..
+GENERIC_LINUX_PATH=$(PLATFORM_LIB_SRC_PATH)/genericLinux
+include $(GENERIC_LINUX_PATH)/MakeConfig
+
+MYDEFS=-DHAVE_SYS_UIO_H -DUSE_RTK_VOUT_UTIL -DHAVE_PTHREADS
+rm=/bin/rm -f
+cp=/bin/cp -f
+CC= $(MYCC)
+CXX = $(MYCXX)
+AR= $(MYAR) cq
+RANLIB= $(MYRANLIB)
+STRIP=$(MYSTRIP)
+LIBNAME= $(GENERIC_LINUX_PATH)/lib/librvsd_sp.a
+
+TOP=$(PLATFORM_LIB_SRC_PATH)
+LOCAL_PATH=.
+
+
+############
+## source ##
+############
+LOCAL_SRC_FILES:=       \
+        dvbsp_decoder/DVBSP_Decoder_HL.cpp dvbsp_decoder/DVBSP_Decoder.cpp \
+        sp_common/sp_common.cpp sp_common/sp_rpc.cpp dvdsp_decoder/SP.cpp sp_common/sp_scale.cpp\
+        bdsp_decoder/BDSP_Decoder.cpp bdsp_decoder/BDSP_Decoder_HL.cpp \
+        sp_common/sp_dummy.cpp
+
+#############
+## include ##
+#############
+
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/src/xdr
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/include/xdr
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/generate/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/generate/include/system
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_ion
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/fw_socket
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/Include/RtkIpc
+LOCAL_C_INCLUDES += $(TOP)/system/core/include
+LOCAL_C_INCLUDES += $(TOP)/bionic/libc/kernel/common
+LOCAL_C_INCLUDES += $(TOP)/genericLinux/include
+
+
+##################
+## compile flag ##
+##################
+
+LOCAL_CFLAGS += -DSPU_DECODE_ENABLE
+LOCAL_CFLAGS += -DDVBSPDEC_ENABLED
+LOCAL_CFLAGS += -DBDSPDEC_ENABLED
+LOCAL_CFLAGS += -DLOCAL_BUILD_SP
+
+
+ifeq ($(TARGET_BOARD_PLATFORM), kylin)
+LOCAL_CFLAGS += -DRVSD_BDSP_YUV4K_2_RGB2K
+endif
+
+ifneq ($(TARGET_BOARD_PLATFORM), kylin)
+LOCAL_CFLAGS += -DBDSP_SEND_PHY_TO_VO
+LOCAL_CFLAGS += -DSP_SEND_PHY_TO_VO
+endif
+
+#LOCAL_CFLAGS += -Werror
+#LOCAL_CFLAGS += -Wno-unused-parameter
+#LOCAL_CFLAGS += -Wno-format ## printf format warnning
+LOCAL_CFLAGS += -Wno-multichar
+
+
+OBJ_FILES = $(addsuffix .o, $(basename $(LOCAL_SRC_FILES)))
+
+INCLUDES = $(addprefix -I, $(LOCAL_C_INCLUDES)) $(addprefix -I, $(LOCAL_SYS_INCLUDES))
+
+CFLAGS = $(INCLUDES) $(DEFINES) $(LOCAL_CFLAGS) -DSYS_UNIX=1 $(MYDEFS) -fPIC
+
+##########
+## link ##
+##########
+LIBS := libion liblog
+LIBS += libRTK_lib	## RPC
+LIBS += libfw_socket_client   ## socket
+LIBS += librtk_ion    ## ION
+LIBS += libRtkIpc
+LIBS += librvsd
+
+
+
+LDFLAGS = -L$(GENERIC_LINUX_PATH)/lib -Wl,--start-group $(LIBS) -Wl,--end-group
+LDFLAGS += -lpthread -ldl
+
+
+all: $(LIBNAME)
+
+$(LIBNAME) : $(OBJ_FILES)
+	$(SHOW_COMMAND)$(rm) $@
+	$(SHOW_COMMAND)$(AR) $@ $(OBJ_FILES)
+	$(SHOW_COMMAND)$(RANLIB) $@
+
+
+
+
+clean:
+	$(SHOW_COMMAND)$(rm) $(OBJ_FILES) $(LIBNAME) $(SO_LIBNAME) core *~ 
+
+miniclean: clean
+
+.cpp.o:
+	$(rm) -f $@
+	$(SHOW_COMMAND)echo -=--=--=- [$*.cpp] -=--=--=--=--=--=--=--=--=-
+	$(SHOW_COMMAND)$(CXX) $(CFLAGS) $(WARNING) $(DEBUGFLAG) -c $*.cpp -o $@
+
+.c.o:
+	$(rm) -f $@
+	$(SHOW_COMMAND)echo --------- [$*.c] ---------------------------
+	$(SHOW_COMMAND)$(CC) $(CFLAGS) $(WARNING) $(DEBUGFLAG) -c $*.c -o $@

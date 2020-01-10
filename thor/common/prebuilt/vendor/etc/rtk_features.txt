@@ -1,0 +1,37 @@
+#
+# Format for default variable:
+# {FEATURE_NAME}={VALUE}
+#
+
+OMX_DEC_OUTPUT_IS_SURFACE_VIEW         = false
+OMX_DEC_DELAY_DISPLAY_ORDER            = false
+OMX_DEC_REASONABLE_BUFFER_COUNT        = false
+OMX_DEC_COMBINED_BUFFER                = true
+OMX_DEC_DETECT_SURFACE_VIEW            = false
+OMX_DEC_DETECT_SIDEBAND_SURFACE        = true
+OMX_DEC_REDUCE_EXTRA_BUF               = false
+
+# OMX_DEC_ADAPTIVE_HEIGHT = 2176
+# OMX_DEC_ADAPTIVE_WIDTH = 4096
+
+#
+# Format for process specific variable:
+# {PROCESS_NAME}:{FEATURE_NAME}={VALUE}
+#
+
+androidtv.aolon : OMX_DEC_OUTPUT_IS_SURFACE_VIEW    = false
+tv.huffpostlive : OMX_DEC_OUTPUT_IS_SURFACE_VIEW    = false
+ion.dailymotion : OMX_DEC_OUTPUT_IS_SURFACE_VIEW    = false
+org.xbmc.kodi   : OMX_DEC_DELAY_DISPLAY_ORDER       = true
+org.xbmc.kodi   : OMX_DEC_REASONABLE_BUFFER_COUNT   = true
+facebook.katana : OMX_DEC_OUTPUT_IS_SURFACE_VIEW    = false
+twitter.android : OMX_DEC_OUTPUT_IS_SURFACE_VIEW    = false
+droid.media.cts : OMX_DEC_COMBINED_BUFFER           = false
+id.security.cts : OMX_DEC_COMBINED_BUFFER           = false
+droid.media.gts : OMX_DEC_REDUCE_EXTRA_BUF          = true
+oid.youtube.gts : OMX_DEC_REDUCE_EXTRA_BUF          = true
+
+roid.youtube.tv : OMX_DEC_DETECT_SURFACE_VIEW = true
+m.netflix.ninja : OMX_DEC_DETECT_SURFACE_VIEW = true
+roid.youtube.tv : OMX_DEC_ADAPTIVE_WIDTH = 4096
+roid.youtube.tv : OMX_DEC_ADAPTIVE_HEIGHT = 2176

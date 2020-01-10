@@ -1,0 +1,44 @@
+type hdmiutil, domain;
+type hdmiutil_exec, exec_type, vendor_file_type, file_type;
+type hdmiutil_data_file, file_type, data_file_type;
+
+init_daemon_domain(hdmiutil)
+
+hwbinder_use(hdmiutil)
+add_hwservice(hdmiutil, vnd_hdmiutil_hwservice)
+set_prop(hdmiutil, hdmi_prop)
+set_prop(hdmiutil, rtk_prop)
+
+vndbinder_use(hdmiutil)
+get_prop(hdmiutil, hwservicemanager_prop)
+allow hdmiutil ctl_default_prop:property_service set;
+allow hdmiutil hdmi_device:chr_file { read write ioctl open getattr };
+allow hdmiutil init:unix_stream_socket connectto;
+allow hdmiutil ion_device:chr_file { read ioctl open };
+allow hdmiutil property_socket:sock_file write;
+allow hdmiutil self:netlink_kobject_uevent_socket { read bind create setopt };
+allow hdmiutil { sysfs_switch sysfs }:file { read getattr open };
+allow hdmiutil alsadaemon_tmpfs:file { getattr open read write };
+allow hdmiutil factoryutil:binder call;
+allow hdmiutil tmpfs:dir { read write add_name };
+allow hdmiutil hdmiutil_tmpfs:file { create open };
+allow hdmiutil factoryutil_tmpfs:file { read write open getattr };
+allow hdmiutil one_step_info_device:blk_file { read write getattr open };
+allow hdmiutil vnd_factoryutil_hwservice:hwservice_manager find;
+allow hdmiutil hwmbinder_service:service_manager find;
+allow hdmiutil hdcp_device:chr_file { read write ioctl open getattr};
+allow hdmiutil { sysfs_switch block_device }:dir search;
+allow hdmiutil rtkhwmbinder:binder call;
+allow hdmiutil hal_graphics_composer_default:binder call;
+allow system_app hdmiutil:binder call;
+allow hdmiutil system_app:binder call;
+allow hdmiutil dptxutil:binder { call transfer };
+allow hdmiutil vnd_dptxutil_hwservice:hwservice_manager find;
+allow hdmiutil dvdplayer_device:chr_file rw_file_perms;
+allow hdmiutil hdmiutil_data_file:dir { add_name write search };
+allow hdmiutil hdmiutil_data_file:file { append create getattr open read };
+allow hdmiutil dptx_prop:file read;
+allow hdmiutil default_prop:file getattr;
+#allow hdmiutil default_prop:file { open read };        #neverallow
+allow hdmiutil vendor_data_file:file { getattr open read };
+allow hdmiutil tee_device:chr_file { read write ioctl open };

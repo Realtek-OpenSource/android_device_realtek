@@ -1,0 +1,30 @@
+LOCAL_PATH:= $(call my-dir)
+
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES += DPTxLib.cpp
+
+LOCAL_SHARED_LIBRARIES += libutils
+LOCAL_SHARED_LIBRARIES += liblog
+LOCAL_SHARED_LIBRARIES += vendor.realtek.dptxutil.provider@1.0
+LOCAL_SHARED_LIBRARIES += libhidlbase
+LOCAL_SHARED_LIBRARIES += libhidltransport
+
+#LOCAL_32_BIT_ONLY := true
+
+LOCAL_C_INCLUDES += system/core/libutils/include/utils
+LOCAL_C_INCLUDES += device/realtek/proprietary/libs/HDMILib
+
+LOCAL_MODULE:= libDPTxLib
+LOCAL_MODULE_TAGS:= optional
+LOCAL_VENDOR_MODULE := true
+#LOCAL_PROPRIETARY_MODULE := true
+
+#LOCAL_CFLAGS += -save-temps
+
+include $(BUILD_SHARED_LIBRARY)
+
+################################################################################
+

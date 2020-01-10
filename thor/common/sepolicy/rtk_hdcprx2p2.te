@@ -1,0 +1,15 @@
+type rtk_hdcprx2p2, domain;
+type rtk_hdcprx2p2_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(rtk_hdcprx2p2)
+
+vndbinder_use(rtk_hdcprx2p2)
+
+#============= rtk_hdcprx2p2 ============== 
+allow rtk_hdcprx2p2 rtkhwmbinder:binder call;
+allow rtk_hdcprx2p2 hwmbinder_service:service_manager find;
+allow rtk_hdcprx2p2 hdcp_device:chr_file { read write ioctl open };
+allow rtk_hdcprx2p2 video_device:chr_file { read write ioctl open };
+allow rtk_hdcprx2p2 vendor_data_file:file { read open };
+allow rtk_hdcprx2p2 hdmiutil_data_file:dir search;
+allow rtk_hdcprx2p2 tee_device:chr_file { read write ioctl open };

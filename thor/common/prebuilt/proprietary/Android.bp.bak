@@ -1,0 +1,13 @@
+
+cc_prebuilt_library_shared {
+    name: "libHDMILib",
+    srcs: [ "lib/libHDMILib.so" ],
+    vendor_available: true,
+}
+
+cc_prebuilt_library_shared {
+    name: "libDPTxLib",
+    srcs: [ "lib/libDPTxLib.so" ],
+    vendor_available: true,
+}
+

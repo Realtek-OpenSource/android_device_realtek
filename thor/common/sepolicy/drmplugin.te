@@ -1,0 +1,35 @@
+type drmplugin, domain, mlstrustedsubject;
+hal_server_domain(drmplugin, hal_drm)
+
+type drmplugin_exec, exec_type, file_type, vendor_file_type;
+typeattribute drmplugin system_writes_vendor_properties_violators;
+init_daemon_domain(drmplugin)
+
+# Allow drmplugin hals to access ashmem memory allocated by apps
+allow drmplugin { appdomain -isolated_app }:fd use;
+allow drmplugin mediacodec:fd use;
+# add_service(drmplugin, drmplugin_service)
+
+allow drmplugin self:capability { setuid setgid };
+allow drmplugin ion_device:chr_file r_file_perms;
+allow drmplugin vndbinder_device:chr_file rw_file_perms;
+allow drmplugin hwservicemanager_prop:file r_file_perms;
+allow drmplugin hwservicemanager:binder { call transfer };
+
+allow drmplugin mediadrmserver:binder { call transfer };
+allow drmplugin serialno_prop:file r_file_perms;
+allow drmplugin self:process execmem;
+
+########################################################
+allow hwservicemanager drmplugin:binder { call transfer };
+allow hwservicemanager drmplugin:dir r_dir_perms;
+allow hwservicemanager drmplugin:file r_file_perms;
+allow mediadrmserver drmplugin:binder {call transfer };
+########################################################
+
+allow drmplugin vendor_data_file:file create_file_perms;
+allow drmplugin vendor_data_file:dir create_dir_perms;
+
+allow drmplugin mediadrm_vendor_data_file:dir create_dir_perms;
+allow drmplugin mediadrm_vendor_data_file:file {rw_file_perms create};
+#allow drmplugin system_prop:file read;

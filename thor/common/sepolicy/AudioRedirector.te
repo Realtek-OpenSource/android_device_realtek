@@ -1,0 +1,8 @@
+type AudioRedirector, domain;
+type AudioRedirector_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(AudioRedirector)
+
+vndbinder_use(AudioRedirector)
+binder_call(AudioRedirector, audioserver)
+# allow AudioRedirector binder_device:chr_file { read write getattr }; neverallow

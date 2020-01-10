@@ -1,0 +1,22 @@
+type voututil, domain;
+type voututil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(voututil)
+
+hal_client_domain(voututil, hal_allocator)
+hwbinder_use(voututil)
+add_hwservice(voututil, vnd_voututil_hwservice)
+
+vndbinder_use(voututil)
+get_prop(voututil, hwservicemanager_prop)
+allow voututil hidl_allocator_hwservice:hwservice_manager find;
+allow voututil hidl_memory_hwservice:hwservice_manager find;
+allow voututil system_file:dir r_dir_perms;
+allow voututil rtk_prop:file { read open getattr};
+
+# For voututil calling hdmiutil
+allow voututil hdmiutil:binder call;
+allow voututil init:unix_stream_socket connectto;
+allow voututil property_socket:sock_file write;
+allow voututil vnd_hdmiutil_hwservice:hwservice_manager find;
+allow voututil tmpfs:chr_file r_file_perms;

@@ -1,0 +1,8 @@
+allow untrusted_app_27 sideband:fd use;
+allow untrusted_app_27 debugfs_mali:dir search;
+allow untrusted_app_27 gralloc_prop:file { read open getattr };
+allow untrusted_app_27 rtk_prop:file { read getattr open };
+get_prop(untrusted_app_27, netflix_prop)
+
+allow untrusted_app_27 ufsd:file { getattr open read };
+allow untrusted_app_27 ufsd:dir { open read };

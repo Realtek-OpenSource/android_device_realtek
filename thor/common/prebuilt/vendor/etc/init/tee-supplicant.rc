@@ -1,0 +1,10 @@
+on fs
+    start tee
+
+service tee /vendor/bin/tee-supplicant
+    class core
+    user system
+    group system
+    capabilities SYS_RAWIO
+    disabled
+    oneshot

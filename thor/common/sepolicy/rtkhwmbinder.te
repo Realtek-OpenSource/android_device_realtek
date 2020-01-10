@@ -1,0 +1,13 @@
+type rtkhwmbinder, domain;
+type rtkhwmbinder_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(rtkhwmbinder)
+
+add_service(rtkhwmbinder, hwmbinder_service)
+vndbinder_use(rtkhwmbinder)
+
+#allow rtkhwmbinder self:capability dac_override;           #neverallow
+allow rtkhwmbinder hdmiutil_data_file:file { read getattr open };
+allow rtkhwmbinder ion_device:chr_file { read ioctl open };
+allow rtkhwmbinder hdmiutil_data_file:dir search;
+allow rtkhwmbinder mcp_device:chr_file { read write ioctl open };

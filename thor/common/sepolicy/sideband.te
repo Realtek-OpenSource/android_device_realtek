@@ -1,0 +1,30 @@
+type sideband, domain;
+type sideband_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(sideband)
+
+add_service(sideband, sideband_service)
+vndbinder_use(sideband)
+binder_call(sideband, mediacodec)
+get_prop(sideband, rtk_prop)
+get_prop(sideband, hwservicemanager_prop)
+get_prop(sideband, hwc_prop)
+
+allow sideband hal_audio_default:binder transfer;
+allow sideband { sw_sync_device tmpfs ion_device dvdplayer_device}:chr_file rw_file_perms;
+allow sideband hwservicemanager:binder { call transfer};
+
+############################################################
+hwbinder_use(sideband)
+
+allow sideband hal_graphics_mapper_hwservice:hwservice_manager find;
+allow sideband hal_graphics_allocator_hwservice:hwservice_manager find;
+allow sideband { hal_graphics_composer_default hal_graphics_allocator_default}:binder { call transfer };
+allow sideband hal_graphics_allocator_default:fd use;
+
+allow sideband { graphics_device tee_device}:chr_file { ioctl open read write };
+allow sideband hal_power_default:binder call;
+allow sideband hal_power_hwservice:hwservice_manager find;
+allow sideband graphics_device:dir search;
+allow sideband gralloc_prop:file { read getattr open };
+allow sideband self:capability sys_nice;

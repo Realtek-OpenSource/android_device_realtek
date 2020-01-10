@@ -1,0 +1,19 @@
+get_prop(priv_app, media_prop)
+get_prop(priv_app, rtk_prop)
+get_prop(priv_app, net_dns_prop)
+get_prop(priv_app, afbc_prop)
+get_prop(priv_app, gralloc_prop)
+
+allow priv_app gralloc_prop:file read;
+allow priv_app afbc_prop:file read;
+allow priv_app mediadrmserver_exec:file r_file_perms;
+allow priv_app { zygote device debugfs_mali }:dir r_dir_perms;
+allow priv_app { proc_interrupts proc_modules wifi_prop proc_stat proc_uptime sysfs_android_usb }:file r_file_perms;
+
+allow priv_app isolated_app:dir search;
+allow priv_app sysfs:dir open;
+allow priv_app isolated_app:file getattr;
+
+# Never allow 
+#allow priv_app { zygote proc sysfs }:file r_dir_perms;
+#allow priv_app isolated_app:file open;

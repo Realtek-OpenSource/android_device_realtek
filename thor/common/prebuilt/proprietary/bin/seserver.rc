@@ -1,0 +1,4 @@
+service seserver /vendor/bin/seserver
+    class hal
+    user media
+    group system

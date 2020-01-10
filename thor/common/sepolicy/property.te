@@ -1,0 +1,11 @@
+type rtk_prop, property_type;
+type pppoe_prop, property_type;
+type media_prop, property_type;
+type afbc_prop, property_type;
+type hwc_prop, property_type;
+type hwc_per_prop, property_type;
+type dptx_prop, property_type;
+type hdmi_prop, property_type;
+type gralloc_prop, property_type;
+type netflix_prop, property_type;
+type boot_prop, property_type;

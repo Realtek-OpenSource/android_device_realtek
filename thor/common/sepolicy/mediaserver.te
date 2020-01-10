@@ -1,0 +1,2 @@
+get_prop(mediaserver, rtk_prop)
+get_prop(mediaserver, gralloc_prop)

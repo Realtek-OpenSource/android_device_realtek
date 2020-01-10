@@ -1,0 +1,6 @@
+service fb_init /vendor/bin/fb_init
+    class core
+    user root
+    group root media graphics
+    oneshot
+

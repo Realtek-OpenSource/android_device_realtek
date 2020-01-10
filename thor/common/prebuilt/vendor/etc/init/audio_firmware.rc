@@ -1,0 +1,6 @@
+service audio_firmware /vendor/bin/audio_firmware
+    class delay_start
+    user root
+    group root
+    oneshot
+

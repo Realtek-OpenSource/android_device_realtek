@@ -1,0 +1,8 @@
+get_prop(hal_audio_default, rtk_prop)
+vndbinder_use(hal_audio_default)
+binder_call(hal_audio_default, sideband)
+
+allow hal_audio_default sideband_service:service_manager find;
+allow hal_audio_default {sideband vndservicemanager}:binder {call};
+allow hal_audio_default hidraw:unix_stream_socket connectto;
+allow hal_audio_default dvdplayer_device:chr_file rw_file_perms;

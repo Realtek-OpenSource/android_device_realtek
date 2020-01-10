@@ -1,0 +1,26 @@
+type rvsd, domain;
+type rvsd_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(rvsd)
+
+add_hwservice(rvsd, vnd_rvsd_hwservice)
+hwbinder_use(rvsd)
+vndbinder_use(rvsd)
+get_prop(rvsd, rtk_prop)
+get_prop(rvsd, hwservicemanager_prop)
+set_prop(rvsd, rtk_prop)
+allow rvsd system_file:dir r_dir_perms;
+allow rvsd se_service:service_manager find;
+allow rvsd seserver:binder { call transfer };
+allow rvsd uio_device:chr_file r_file_perms;
+binder_call(rvsd, mediaserver)
+
+#============= rvsd ==============
+binder_call(rvsd, system_app)
+set_prop(rvsd, hwc_prop)
+set_prop(rvsd, media_prop)
+
+#============= system_app ==============
+allow system_app vnd_rvsd_hwservice:hwservice_manager find;
+binder_call(system_app, rvsd)
+binder_call(rvsd, media_app)

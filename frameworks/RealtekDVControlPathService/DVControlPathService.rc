@@ -1,0 +1,6 @@
+service DVCP /vendor/bin/DVControlPath_server
+    class core
+    user media
+    group media
+    seclabel u:r:realtek:s0
+    #disabled

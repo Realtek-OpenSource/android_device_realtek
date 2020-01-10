@@ -1,0 +1,4 @@
+service mdserver /vendor/bin/mdserver
+    class hal
+    user media
+    group system

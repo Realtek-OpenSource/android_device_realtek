@@ -1,0 +1,11 @@
+get_prop(bootanim, rtk_prop)
+get_prop(bootanim, afbc_prop)
+get_prop(bootanim, gralloc_prop)
+
+allow bootanim gralloc_prop:file read;
+allow bootanim afbc_prop:file read;
+allow bootanim gralloc_prop:file open;
+allow bootanim afbc_prop:file open;
+allow bootanim gralloc_prop:file getattr;
+allow bootanim afbc_prop:file getattr;
+allow bootanim debugfs_mali:dir r_dir_perms;

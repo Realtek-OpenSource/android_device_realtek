@@ -1,0 +1,9 @@
+vendor.realtek.audioredirect::IAudioRedirect     u:object_r:vnd_audioredirect_hwservice:s0
+vendor.realtek.audioutil::IAudioUtil             u:object_r:vnd_audioutil_hwservice:s0
+vendor.realtek.voututil::IVoutUtil               u:object_r:vnd_voututil_hwservice:s0
+vendor.realtek.rvsd::IRvsd                       u:object_r:vnd_rvsd_hwservice:s0
+vendor.realtek.hdmiutil.provider::IHdmiUtil      u:object_r:vnd_hdmiutil_hwservice:s0
+vendor.realtek.dptxutil.provider::IDPTxUtil      u:object_r:vnd_dptxutil_hwservice:s0
+vendor.realtek.factoryutil::IFactoryUtil         u:object_r:vnd_factoryutil_hwservice:s0
+vendor.realtek.screenrecord::IScreenRecordService         u:object_r:vnd_screenrecord_hwservice:s0
+vendor.realtek.allocator::IAllocator                 u:object_r:hal_graphics_allocator_hwservice:s0

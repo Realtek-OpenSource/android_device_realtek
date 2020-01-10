@@ -1,0 +1,13 @@
+type dvcp, domain;
+type dvcp_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(dvcp)
+
+add_service(dvcp, dvcp_service)
+vndbinder_use(dvcp)
+binder_call(dvcp, mediacodec)
+get_prop(dvcp, rtk_prop)
+
+allow dvcp ion_device:chr_file r_file_perms;
+allow dvcp { dvdplayer_device tmpfs }:chr_file rw_file_perms;
+#allow dvcp binder_device:chr_file {read write}; neverallow

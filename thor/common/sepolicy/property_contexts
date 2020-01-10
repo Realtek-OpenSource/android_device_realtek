@@ -1,0 +1,56 @@
+vendor.net.wifi.ext.actions             u:object_r:rtk_prop:s0
+vendor.net.pppoe.                       u:object_r:pppoe_prop:s0
+vendor.omx.                             u:object_r:media_prop:s0
+vendor.rvsd.                            u:object_r:media_prop:s0
+persist.vendor.media.                   u:object_r:media_prop:s0
+persist.vendor.gralloc.afbc.fb          u:object_r:afbc_prop:s0
+persist.vendor.gralloc.afbc.texture     u:object_r:afbc_prop:s0
+vendor.hwc.                             u:object_r:hwc_prop:s0
+persist.vendor.hwc.                     u:object_r:hwc_per_prop:s0
+vendor.rtk.                             u:object_r:rtk_prop:s0
+persist.vendor.rtk.                     u:object_r:rtk_prop:s0
+ro.vendor.rtk.                          u:object_r:rtk_prop:s0
+
+# For Hdmi
+vendor.hdmi.service.start               u:object_r:hdmi_prop:s0
+persist.vendor.display.standard         u:object_r:hdmi_prop:s0
+persist.vendor.edid.auto                u:object_r:hdmi_prop:s0
+vendor.gralloc.                         u:object_r:gralloc_prop:s0
+
+
+# For AudioUtil 
+vendor.hdmi.output                      u:object_r:rtk_prop:s0
+vendor.spdif.output                     u:object_r:rtk_prop:s0
+vendor.agc.mode                         u:object_r:rtk_prop:s0
+
+# For dptx
+vendor.dptx.service.start               u:object_r:dptx_prop:s0
+
+# For Netflix
+vendor.display-size                     u:object_r:netflix_prop:s0
+ro.vendor.nrdp.                         u:object_r:netflix_prop:s0
+
+# For RtkDebugTool
+vendor.debug.                           u:object_r:rtk_prop:s0
+persist.vendor.dvdlog                   u:object_r:rtk_prop:s0
+persist.vendor.net                      u:object_r:rtk_prop:s0
+
+# For Settings
+persist.vendor.hdmirx.                  u:object_r:rtk_prop:s0
+persist.vendor.audio.in                 u:object_r:rtk_prop:s0
+persist.vendor.video.                   u:object_r:rtk_prop:s0
+persist.vendor.vold.                    u:object_r:rtk_prop:s0
+persist.vendor.screenoff.suspend        u:object_r:rtk_prop:s0
+persist.vendor.performancemode          u:object_r:rtk_prop:s0
+persist.vendor.vout.                    u:object_r:rtk_prop:s0
+persist.vendor.pro.playback             u:object_r:rtk_prop:s0
+persist.vendor.cec.                     u:object_r:rtk_prop:s0
+persist.vendor.ignore.edid              u:object_r:rtk_prop:s0
+persist.vendor.audio.                   u:object_r:rtk_prop:s0
+persist.vendor.hdmi.                    u:object_r:rtk_prop:s0
+persist.vendor.miracast.reminder        u:object_r:rtk_prop:s0
+
+# For Pppoe
+persist.vendor.pppoe.                   u:object_r:rtk_prop:s0
+
+ro.boot.                                u:object_r:boot_prop:s0

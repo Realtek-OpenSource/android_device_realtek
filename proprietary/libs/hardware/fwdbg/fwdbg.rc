@@ -1,0 +1,6 @@
+service fwdbg /vendor/bin/fwdbg
+    class core
+    user root
+    group root media graphics
+    oneshot
+

@@ -1,0 +1,4 @@
+Sideband                            u:object_r:sideband_service:s0
+android.hwmbindermanager            u:object_r:hwmbinder_service:s0
+realtek.DVCP                                u:object_r:dvcp_service:s0
+vendor.realtek.se                   u:object_r:se_service:s0

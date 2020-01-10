@@ -1,0 +1,10 @@
+/dev/block/platform/98012000.emmc/by-name/system     /           ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/data       /data       ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/cache      /cache      ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/nasroot    /nasroot    raw       defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/nasetc     /nasetc     ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/xen        /xen        ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/vendor     /vendor     ext4      defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/boot       /boot       raw       defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/recovery   /recovery   raw       defaults        defaults
+/dev/block/platform/98012000.emmc/by-name/misc       /misc       emmc      defaults        defaults

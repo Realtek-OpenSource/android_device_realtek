@@ -1,0 +1,20 @@
+type screenrecord, domain;
+type screenrecord_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(screenrecord)
+
+hal_client_domain(screenrecord, hal_allocator)
+hwbinder_use(screenrecord)
+add_hwservice(screenrecord, vnd_screenrecord_hwservice)
+
+vndbinder_use(screenrecord)
+get_prop(screenrecord, hwservicemanager_prop)
+allow screenrecord hidl_allocator_hwservice:hwservice_manager find;
+allow screenrecord hidl_memory_hwservice:hwservice_manager find;
+allow screenrecord system_file:dir r_dir_perms;
+allow screenrecord sysfs:file { read open };
+allow screenrecord rtk_prop:file { read open getattr };
+allow screenrecord ion_device:chr_file { read open ioctl};
+allow screenrecord dvdplayer_device:chr_file rw_file_perms;
+allow platform_app screenrecord:binder call;
+allow platform_app vnd_screenrecord_hwservice:hwservice_manager find;

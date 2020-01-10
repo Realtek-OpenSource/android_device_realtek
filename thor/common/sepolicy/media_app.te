@@ -1,0 +1,26 @@
+type media_app, domain;
+typeattribute media_app appdomain;
+
+allow media_app appwidget_service:service_manager find;
+allow media_app audio_service:service_manager find;
+allow media_app audioserver_service:service_manager find;
+allow media_app hal_configstore_ISurfaceFlingerConfigs:hwservice_manager find;
+allow media_app hal_graphics_mapper_hwservice:hwservice_manager find;
+allow media_app media_session_service:service_manager find;
+allow media_app surfaceflinger_service:service_manager find;
+allow media_app sideband:fd use;
+allow media_app activity_service:service_manager find;
+allow media_app ashmem_device:chr_file execute;
+allow media_app self:process execmem;
+allow media_app zygote:fd use;
+allow media_app tmpfs:file rx_file_perms;
+allow media_app rvsd:binder { call transfer };
+allow media_app voututil:binder call;
+allow media_app vnd_rvsd_hwservice:hwservice_manager find;
+
+get_prop(media_app, netflix_prop)
+binder_call(media_app, rvsd)
+allow media_app debugfs_mali:dir search;
+allow media_app vnd_voututil_hwservice:hwservice_manager find;
+allow media_app autofill_service:service_manager find;
+allow media_app mediaserver_service:service_manager find;

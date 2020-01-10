@@ -1,0 +1,13 @@
+service DvdPlayer /vendor/bin/DvdPlayer
+    class delay_start
+    user root
+    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm graphics drmrpc media system
+    ioprio rt 4
+    disabled
+
+#service rvsd /system/bin/rvsd
+#    class main
+#    user media
+#    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm graphics drmrpc
+#    ioprio rt 4
+

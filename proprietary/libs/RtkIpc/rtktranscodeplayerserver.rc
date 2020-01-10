@@ -1,0 +1,4 @@
+service rtktranscodeplayerserver /vendor/bin/rtktranscodeplayerserver
+    class hal
+    user media
+    group system

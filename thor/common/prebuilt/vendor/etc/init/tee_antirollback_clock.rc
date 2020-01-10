@@ -1,0 +1,7 @@
+service tee_antirollback_clock /vendor/bin/tee_antirollback_clock
+    class core
+    user system
+    group system
+    #disabled
+    oneshot
+

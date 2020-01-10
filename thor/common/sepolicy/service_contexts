@@ -1,0 +1,3 @@
+hidraw                              u:object_r:hidraw_service:s0
+drm-widevine-hal-1-0                u:object_r:drmplugin_service:s0
+#hack_sideband                       u:object_r:Hack_Sideband_service:s0

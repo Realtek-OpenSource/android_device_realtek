@@ -1,0 +1,4 @@
+allow vndservicemanager hal_graphics_allocator_default:dir search;
+allow vndservicemanager hal_graphics_allocator_default:file { open read };
+allow vndservicemanager hal_graphics_allocator_default:process getattr;
+

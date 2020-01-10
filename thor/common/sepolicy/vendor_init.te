@@ -1,0 +1,40 @@
+type vendor_init_exec, exec_type, vendor_file_type, file_type;
+type tmp_data_file, file_type, data_file_type;
+
+init_daemon_domain(vendor_init)
+
+set_prop(vendor_init, shell_prop)
+set_prop(vendor_init, media_prop)
+set_prop(vendor_init, vendor_default_prop)
+set_prop(vendor_init, ffs_prop)
+set_prop(vendor_init, rtk_prop)
+set_prop(vendor_init, system_prop)
+
+allow vendor_init afbc_prop:property_service set;
+allow vendor_init { rootfs }:dir create_dir_perms;
+allow vendor_init proc:file rw_file_perms;
+allow vendor_init vendor_init:capability sys_module;
+allow vendor_init vendor_file:system module_load;
+allow vendor_init kernel:system module_request;
+allow vendor_init rootfs:dir create;
+#allow vendor_init { system_data_file tombstone_data_file preloads_data_file preloads_media_file media_rw_data_file bluetooth_data_file }:dir setattr;
+
+#allow vendor_init wifi_data_file:dir search;
+#allow vendor_init system_data_file:dir rw_dir_perms;
+
+allow vendor_init kmsg_device:chr_file { read write open };
+allow vendor_init tmp_data_file:dir { add_name write search };
+allow vendor_init tmp_data_file:file { append create getattr open read };
+allow vendor_init vendor_data_file:dir { add_name read write open remove_name create rmdir setattr };
+allow vendor_init vendor_data_file:file { create open read write setattr getattr rename unlink };
+allow vendor_init hdmiutil_data_file:dir { add_name remove_name write search getattr };
+allow vendor_init hdmiutil_data_file:file { create open read write getattr setattr };
+allow vendor_init mediadrm_vendor_data_file:dir { add_name remove_name write getattr search setattr };
+allow vendor_init mediadrm_vendor_data_file:file { create open read write getattr setattr };
+allow vendor_init rtk_block_device:blk_file { create open read write getattr setattr };
+allow vendor_init sysfs:file { read open };
+allow vendor_init self:capability { dac_override };
+allow vendor_init rootfs:file { getattr };
+allow vendor_init vendor_shell_exec:file { execute_no_trans };
+allow vendor_init vendor_file:file { execute_no_trans };
+allow vendor_init vendor_toolbox_exec:file { execute_no_trans };

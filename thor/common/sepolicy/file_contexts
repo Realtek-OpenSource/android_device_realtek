@@ -1,0 +1,175 @@
+# Labeling files that is unlabeled by AOSP
+
+#dev devices
+/dev/hidraw([0-9])+  u:object_r:hidraw_device:s0
+/dev/avcpu           u:object_r:audio_device:s0
+/dev/cec-0           u:object_r:hdmi_device:s0
+/dev/hdmitx          u:object_r:hdmi_device:s0
+/dev/dptx            u:object_r:dptx_device:s0
+/dev/jpu             u:object_r:video_device:s0
+/dev/mali0           u:object_r:gpu_device:s0
+/dev/mcp_core        u:object_r:mcp_device:s0
+/dev/memalloc        u:object_r:video_device:s0
+/dev/rfkill          u:object_r:net_device:s0
+/dev/rpc[01234567]   u:object_r:dvdplayer_device:s0
+/dev/rpc100          u:object_r:dvdplayer_device:s0
+/dev/rtkbt_dev       u:object_r:rtk_bt_device:s0
+/dev/tee0            u:object_r:tee_device:s0
+/dev/teepriv0        u:object_r:tee_device:s0
+/dev/uctrl           u:object_r:uctrl_device:s0
+/dev/vpu             u:object_r:video_device:s0
+/dev/sw_sync         u:object_r:sw_sync_device:s0
+/dev/block/mmcblk0rpmb  u:object_r:tee_device:s0
+
+#unused devices
+#/dev/cpu_dma_latency
+#/dev/cuse
+#/dev/gpiochip0
+#/dev/hwsem0
+#/dev/hwsem1
+#/dev/memory_bandwidth
+#/dev/network_latency
+#/dev/network_throughput
+#/dev/psaux
+#/dev/scd-0
+#/dev/stune
+#/dev/venus_ir
+#/dev/vga_arbiter
+
+#block devices
+/dev/block/sd(/.*)?   u:object_r:usb_device:s0
+/dev/block/sata*      u:object_r:usb_device:s0
+/dev/block/xvd(/.*)?  u:object_r:usb_device:s0
+
+/dev/block/platform/98012000\.emmc/by-name/system  u:object_r:system_block_device:s0
+/dev/block/platform/98012000\.emmc/by-name/data    u:object_r:userdata_block_device:s0
+/dev/block/platform/98012000\.emmc/by-name/cache   u:object_r:cache_block_device:s0
+/dev/block/platform/98012000\.emmc/by-name/vendor  u:object_r:system_block_device:s0
+/dev/block/platform/98012000\.emmc/by-name/swap    u:object_r:swap_block_device:s0
+
+# for ALSADAEMON
+/dev/block/mmcblk0p0  u:object_r:rtk_block_device:s0
+
+# for uncrypt
+/dev/block/platform/98012000.emmc/by-name/misc                               u:object_r:misc_block_device:s0
+
+# vendor files
+/vendor/bin/mk_emmc_swap.sh                                  u:object_r:emmc_swap_exec:s0
+/vendor/bin/ext4resize.sh                                    u:object_r:ext4resize_exec:s0
+/vendor/bin/seserver                                         u:object_r:seserver_exec:s0
+/vendor/bin/hw/vendor.realtek.rvsd@1.0-service               u:object_r:rvsd_exec:s0
+/vendor/bin/hw/vendor.realtek.audioredirect@1.0-service      u:object_r:audioredirect_exec:s0
+/vendor/bin/hw/vendor.realtek.audioutil@1.0-service          u:object_r:audioutil_exec:s0
+/vendor/bin/hw/vendor.realtek.voututil@1.0-service           u:object_r:voututil_exec:s0
+/vendor/bin/hw/vendor.realtek.hdmiutil.provider@1.0-service  u:object_r:hdmiutil_exec:s0
+/vendor/bin/hw/vendor.realtek.dptxutil.provider@1.0-service  u:object_r:dptxutil_exec:s0
+/vendor/bin/hw/vendor.realtek.factoryutil@1.0-service        u:object_r:factoryutil_exec:s0
+/vendor/bin/hw/vendor.realtek.screenrecord@1.0-service       u:object_r:screenrecord_exec:s0
+/vendor/bin/gatord                                           u:object_r:gatord_exec:s0
+/vendor/bin/ALSADaemon                                       u:object_r:alsadaemon_exec:s0
+/vendor/bin/fb_init                                          u:object_r:fbinit_exec:s0
+/vendor/bin/fwdbg                                            u:object_r:fwdbg_exec:s0
+/vendor/bin/sideband                                         u:object_r:sideband_exec:s0
+/vendor/bin/hw/android.hardware.power@1.0-service.rtk        u:object_r:hal_power_default_exec:s0
+/vendor/bin/hw/vendor.realtek.allocator@1.0-service          u:object_r:hal_graphics_allocator_default_exec:s0
+#/vendor/bin/startTEESup.sh                                   u:object_r:tee_sup_exec:s0
+/vendor/bin/RtkHWMBinder                                     u:object_r:rtkhwmbinder_exec:s0
+/vendor/bin/rtk_hdcprx2p2                                    u:object_r:rtk_hdcprx2p2_exec:s0
+#(vendor/bin/RxHdcp                                           u:object_r:rxhdcp_exec:s0
+/vendor/bin/vr_bee_hidraw_daemon                             u:object_r:hidraw_exec:s0
+#/vendor/bin/hw/android.hardware.drm@1.1-service.widevine     u:object_r:hal_drm_widevine_exec:s0
+/vendor/bin/hw/android.hardware.drm@1.1-service.widevine     u:object_r:hal_drm_default_exec:s0
+/vendor/bin/hw/android.hardware.drm@1.1-service.clearkey     u:object_r:hal_drm_default_exec:s0
+/vendor/bin/RtkKeyset                                        u:object_r:vendor_init_exec:s0
+/vendor/bin/DvdPlayer                                        u:object_r:DvdPlayer_exec:s0
+/vendor/bin/AudioRedirector                                  u:object_r:AudioRedirector_exec:s0
+/vendor/bin/DVControlPath_server                             u:object_r:dvcp_exec:s0
+/vendor/bin/tee-supplicant                                   u:object_r:tee_exec:s0
+#/vendor/bin/tee_secure_store_agent                           u:object_r:tee_antirollback_clock_exec:s0
+#/vendor/bin/tee_antirollback_clock                           u:object_r:tee_antirollback_clock_exec:s0
+/vendor/bin/hw/android.hardware.usb@1.1-service.rtk          u:object_r:hal_usb_default_exec:s0
+
+# For Arm nn
+/vendor/bin/hw/android.hardware.neuralnetworks@1.1-service-armnn u:object_r:hal_neuralnetworks_default_exec:s0
+
+# For MS12 Demo
+/vendor/bin/audio_firmware  u:object_r:audio_firmware_exec:s0
+
+# Same process HALs
+/vendor/lib(64)?/hw/android\.hardware\.graphics\.mapper@2\.0-impl-2\.1\.so    u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/hw/gralloc\.thor\.so      u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/librtk_ion\.so            u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/egl/libGLES_mali\.so      u:object_r:same_process_hal_file:s0
+/vendor/lib(64)?/libtinyalsa\.so           u:object_r:same_process_hal_file:s0
+
+# For Youtube
+#/system/bin/hack_sideband                                 u:object_r:Hack_Sideband_exec:s0
+
+# files in /sys
+/sys/devices/platform/9800c000\.se(/.*)?            u:object_r:sysfs_se:s0
+/sys/devices/platform/rtd1xxx-battery\.0(/.*)?      u:object_r:sysfs_power_supply:s0
+/sys/devices/platform/rtd1xxx-ac\.0(/.*)?           u:object_r:sysfs_power_supply:s0
+# For gatord used
+/dev/gator(/.*)?                                    u:object_r:gatord_file:s0
+
+# /data
+/data/vendor/hdcp(/.*)?     u:object_r:hdmiutil_data_file:s0
+/data/vendor/tmp(/.*)?      u:object_r:tmp_data_file:s0
+
+# root
+
+# tmp
+/tmp/edid.bin           u:object_r:rtk_data_file:s0
+/tmp/factory(/.*)?      u:object_r:rtk_data_file:s0
+
+# factory
+/dev/block/mmcblk0      u:object_r:rtk_block_device:s0
+/dev/block/platform/98012000.emmc/by-name/factory           u:object_r:factory_block_device:s0
+/dev/block/platform/98012000.emmc/by-name/param             u:object_r:one_step_info_device:s0
+
+# HDCP
+/dev/i2c-1             u:object_r:hdcp_device:s0
+/dev/hdcp              u:object_r:hdcp_device:s0
+/dev/rxhdcp2p2         u:object_r:hdcp_device:s0
+
+# Suspend control file
+/sys/devices/virtual/rtk_pm/android_control/pm_state                u:object_r:sysfs_suspend_control:s0
+/sys/devices/virtual/rtk_pm/android_control/pm_wakelock_mode        u:object_r:sysfs_suspend_control:s0
+/sys/devices/virtual/rtk_pm/android_control(/.*)?                   u:object_r:sysfs_suspend_control:s0
+/sys/kernel/suspend/context                                         u:object_r:sysfs_suspend_control:s0
+
+# HDMIRx
+/sys/devices/virtual/switch/rx_video(/.*)?                          u:object_r:sysfs_hdmirx:s0
+/sys/devices/virtual/switch/rx_audio(/.*)?                          u:object_r:sysfs_hdmirx:s0
+/sys/devices/virtual/video4linux/video250(/.*)?                     u:object_r:sysfs_hdmirx:s0
+/sys/devices/platform/98037000.hdmirx/hdcp_status                   u:object_r:sysfs_hdmirx:s0
+
+/vendor/bin/wifi_auto_insmod                      u:object_r:vendor_toolbox_exec:s0
+/tmp/RTMediaBrowserPlaylist*.txt                  u:object_r:rtk_data_file:s0
+
+# Realtek file
+/vendor/usr/keylayout/.*\.kl    u:object_r:rtk_vendor_file:s0
+/vendor/usr/keychars/.*\.kcm    u:object_r:rtk_vendor_file:s0
+/vendor/usr/idc/.*\.idc         u:object_r:rtk_vendor_file:s0
+
+# /data
+/data/smlog_dump(/.*)?           u:object_r:smlog_dump_file:s0
+/data/nfc(/.*)?                  u:object_r:nfc_data_file:s0
+/data/time(/.*)?                 u:object_r:time_data_file:s0
+/data/misc/location(/.*)?        u:object_r:location_data_file:s0
+/data/misc/display(/.*)?         u:object_r:display_data_file:s0
+
+/data/misc/perfd(/.*)?           u:object_r:perfd_data_file:s0
+/data/system/perfd(/.*)?         u:object_r:perfd_data_file:s0
+/data/misc/radio(/.*)?           u:object_r:radio_data_file:s0
+/data/misc/netmgr(/.*)?          u:object_r:netmgr_data_file:s0
+/data/vendor/nfc(/.*)?           u:object_r:nfc_vendor_data_file:s0
+/data/vendor/radio(/.*)?         u:object_r:radio_vendor_data_file:s0
+/data/vendor/sensor(/.*)?        u:object_r:sensor_vendor_data_file:s0
+/data/vendor/wifi/cnss_diag(/.*)? u:object_r:cnss_vendor_data_file:s0
+/data/vendor/ramdump(/.*)?       u:object_r:ramdump_vendor_data_file:s0
+/data/vendor/ssrdump(/.*)?       u:object_r:ramdump_vendor_data_file:s0
+/data/vendor/camera(/.*)?        u:object_r:camera_vendor_data_file:s0
+
+/data/vendor/audio(/.*)?         u:object_r:audio_vendor_data_file:s0
+/data/vendor/mediadrm(/.*)?      u:object_r:mediadrm_vendor_data_file:s0

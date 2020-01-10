@@ -1,0 +1,5 @@
+service gatord /vendor/bin/gatord
+    class core
+    user root
+    group root
+    disabled

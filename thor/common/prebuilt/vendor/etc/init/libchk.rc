@@ -1,0 +1,7 @@
+service libchk /vendor/bin/libchk.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+

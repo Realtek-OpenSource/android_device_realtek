@@ -1,0 +1,8 @@
+service bootdvfs /vendor/bin/dvfs.sh performance 0 interactive 45
+    class main
+    oneshot
+    disabled
+
+on property:persist.rtk.performancemode=1
+    stop bootdvfs
+

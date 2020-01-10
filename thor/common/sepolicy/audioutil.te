@@ -1,0 +1,38 @@
+type audioutil, domain;
+type audioutil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(audioutil)
+
+hal_client_domain(audioutil, hal_allocator)
+
+add_hwservice(audioutil, vnd_audioutil_hwservice)
+hwbinder_use(audioutil)
+get_prop(audioutil, hwservicemanager_prop)
+set_prop(audioutil, rtk_prop)
+allow audioutil vndbinder_device:chr_file { read write ioctl open };
+allow audioutil property_socket:sock_file write;
+allow audioutil init:unix_stream_socket connectto;
+
+allow audioutil tmpfs:chr_file { read write open };
+allow audioutil dvdplayer_device:chr_file rw_file_perms;
+
+allow audioutil system_file:dir r_dir_perms;
+allow audioutil rtk_prop:file { read open getattr};
+allow audioutil hidl_allocator_hwservice:hwservice_manager find;
+allow audioutil hidl_memory_hwservice:hwservice_manager find;
+
+allow audioutil ion_device:chr_file { ioctl read open write };                          
+allow audioutil self:netlink_kobject_uevent_socket { create bind setopt read };         
+allow audioutil system_app:binder call; 
+
+allow audioutil sysfs_switch:dir search;
+allow audioutil sysfs_switch:file { getattr open read };
+
+allow audioutil sysfs_hdmirx:dir search;
+allow audioutil sysfs_hdmirx:file { getattr open read };
+
+allow audioutil platform_app:binder call;
+
+allow audioutil video_device:chr_file { ioctl open read write };
+
+allow audioutil uio_device:chr_file { read open ioctl write };

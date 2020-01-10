@@ -1,0 +1,3 @@
+service RtkHWMBinder /vendor/bin/RtkHWMBinder
+    class main
+
