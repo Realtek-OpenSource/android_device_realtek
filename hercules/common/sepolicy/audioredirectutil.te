@@ -1,0 +1,40 @@
+type audioredirectutil, domain;
+type audioredirectutil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(audioredirectutil)
+
+hal_client_domain(audioredirectutil, hal_allocator)
+
+add_hwservice(audioredirectutil, vnd_audioredirectutil_hwservice)
+hwbinder_use(audioredirectutil)
+get_prop(audioredirectutil, hwservicemanager_prop)
+set_prop(audioredirectutil, rtk_prop)
+allow audioredirectutil vndbinder_device:chr_file { read write ioctl open };
+allow audioredirectutil property_socket:sock_file write;
+allow audioredirectutil init:unix_stream_socket connectto;
+
+allow audioredirectutil tmpfs:chr_file { read write open };
+allow audioredirectutil dvdplayer_device:chr_file rw_file_perms;
+
+allow audioredirectutil system_file:dir r_dir_perms;
+allow audioredirectutil rtk_prop:file { read open getattr};
+allow audioredirectutil hidl_allocator_hwservice:hwservice_manager find;
+allow audioredirectutil hidl_memory_hwservice:hwservice_manager find;
+
+allow audioredirectutil ion_device:chr_file { ioctl read open write };
+allow audioredirectutil self:netlink_kobject_uevent_socket { create bind setopt read };
+allow audioredirectutil system_app:binder call;
+
+allow audioredirectutil sysfs_switch:dir search;
+allow audioredirectutil sysfs_switch:file { getattr open read };
+
+
+allow audioredirectutil platform_app:binder call;
+
+allow audioredirectutil video_device:chr_file { ioctl open read write };
+
+allow audioredirectutil uio_device:chr_file { read open ioctl write };
+
+allow system_app vnd_audioredirectutil_hwservice:hwservice_manager {find};
+
+allow system_app audioredirectutil:binder {call};

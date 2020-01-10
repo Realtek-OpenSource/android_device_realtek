@@ -1,0 +1,52 @@
+type gatord, domain;
+type gatord_exec, exec_type, vendor_file_type, file_type;
+
+userdebug_or_eng(`
+typeattribute gatord socket_between_core_and_vendor_violators;
+typeattribute gatord vendor_executes_system_violators;
+')
+
+init_daemon_domain(gatord)
+
+userdebug_or_eng(`
+# Execute and transition to the dumpstate domain
+domain_auto_trans(gatord, dumpstate_exec, dumpstate)
+
+allow gatord kernel:system module_request;
+
+allow gatord {pstorefs sysfs_se sysfs_wakeup_reasons sysfs_rtc sysfs_android_usb sysfs debugfs_mali fs_bpf debugfs_tracing_debug debugfs_tracing_instances debugfs_tracing}:dir r_dir_perms;
+allow gatord {sysfs_power_supply sysfs_suspend_control debugfs_wifi_tracing sysfs_switch sysfs_fs_ext4_features}:dir r_dir_perms;
+allow gatord {selinuxfs sysfs_net sysfs_power sysfs_ipv4 debugfs sysfs_hwrandom sysfs_dm sysfs_zram sysfs_dt_firmware_android sysfs_leds sysfs_lowmemorykiller debugfs_mmc}:dir r_dir_perms;
+allow gatord {gatord_file init kernel init_exec vendor_init ueventd watchdogd hwservicemanager tee logd hal_keymaster_default vndservicemanager servicemanager}:dir r_dir_perms;
+
+allow gatord {sysfs_rtc sysfs_android_usb debugfs_mali fs_bpf debugfs_tracing proc_net}:{lnk_file file} r_file_perms;
+allow gatord {sysfs_power_supply debugfs_wifi_tracing sysfs_switch sysfs_fs_ext4_features sysfs_wake_lock}:{lnk_file file} r_file_perms;
+allow gatord {selinuxfs sysfs_net sysfs_power sysfs_hwrandom sysfs_dm sysfs_zram sysfs_dt_firmware_android sysfs_lowmemorykiller debugfs_mmc}:{lnk_file file} r_file_perms;
+allow gatord {sysfs_ipv4 sysfs_zram_uevent sysfs_wakeup_reasons sysfs_kernel_notes}:{lnk_file file} r_file_perms;
+allow gatord {proc_kmsg proc_swaps proc_misc proc_stat proc_iomem proc_uptime proc_vmstat proc_cmdline proc_loadavg proc_meminfo proc_modules proc_version proc_timer proc_zoneinfo}:{lnk_file file} getattr;
+allow gatord {proc_buddyinfo proc_diskstats proc_interrupts proc_filesystems proc_pagetypeinfo proc_sysrq proc_uid_time_in_state proc_vmallocinfo }:{lnk_file file} getattr;
+allow gatord {debugfs_wakeup_sources debugfs_trace_marker sysfs_usermodehelper sysfs_se sysfs_suspend_control init kernel init_exec vendor_init ueventd watchdogd tee}:{lnk_file file} r_file_perms;
+allow gatord {gatord_file hwservicemanager tee logd hal_keymaster_default vndservicemanager servicemanager}:{lnk_file file} r_file_perms;
+
+allow gatord debugfs:lnk_file r_file_perms;
+allow gatord debugfs:file getattr;
+
+allow gatord gatord:udp_socket create_stream_socket_perms;
+allow gatord gatord:tcp_socket create_stream_socket_perms;
+allow gatord fwmarkd_socket:sock_file write;
+allow gatord {netd gatord}:unix_stream_socket connectto;
+allow gatord device:dir { create_dir_perms mounton};
+
+allow gatord unlabeled:filesystem mount;
+allow gatord unlabeled:dir { mounton rw_dir_perms};
+allow gatord unlabeled:file rw_file_perms;
+
+allow gatord toolbox_exec:file execute;
+allow gatord gatord:capability { net_raw sys_admin };
+allow gatord port:{udp_socket tcp_socket} name_bind;
+allow gatord node:{udp_socket tcp_socket} node_bind;
+
+allow gatord {debugfs_tracing debugfs_tracing_debug}:file write;
+allow gatord sysfs:file r_file_perms;
+allow gatord {pstorefs debugfs_tracing proc sysfs_leds debugfs_tracing_debug }:file r_file_perms;
+')

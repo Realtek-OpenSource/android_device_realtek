@@ -1,0 +1,41 @@
+#============= system_app ==============
+typeattribute system_app system_writes_vendor_properties_violators;
+set_prop(system_app, rtk_prop)
+#allow system_app sysfs:file r_file_perms;
+allow system_app sysfs_net:dir search;
+allow system_app system_data_file:dir r_dir_perms;
+allow system_app tombstone_data_file:dir rw_dir_perms;
+allow system_app tombstone_data_file:file r_file_perms;
+allow system_app vnd_hdmiutil_hwservice:hwservice_manager find;
+allow system_app hdmiutil:binder transfer;
+allow system_app vnd_dptxutil_hwservice:hwservice_manager find;
+allow system_app dptxutil:binder transfer;
+allow system_app vnd_audioutil_hwservice:hwservice_manager find;
+allow system_app audioutil:binder call;
+
+# Write to /cache.
+allow system_app { cache_file cache_recovery_file }:dir create_dir_perms;
+allow system_app { cache_file cache_recovery_file }:file create_file_perms;
+allow system_app cache_file:lnk_file r_file_perms;
+
+# Write to /data/ota_package for OTA packages.
+allow system_app ota_package_file:dir rw_dir_perms;
+allow system_app ota_package_file:file create_file_perms;
+
+# SuspendHandler
+allow system_app self:netlink_kobject_uevent_socket { bind create read setopt };
+allow system_app sysfs_suspend_control:dir search;
+allow system_app sysfs_suspend_control:file { getattr open read write };
+
+# get hdmirx info
+allow system_app sysfs_switch:dir search;
+allow system_app sysfs_switch:file { getattr open read };
+
+#allow system_app sysfs_hdmirx:dir search;
+#allow system_app sysfs_hdmirx:file { getattr open read };
+
+allow system_app sdcardfs:lnk_file getattr;
+
+#============= system_app ==============
+allow system_app unlabeled:dir r_dir_perms;
+allow system_app unlabeled:file r_file_perms;

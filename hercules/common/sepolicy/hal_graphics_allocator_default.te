@@ -1,0 +1,11 @@
+allow hal_graphics_allocator_default graphics_device:dir search;
+allow hal_graphics_allocator_default graphics_device:chr_file rw_file_perms;
+allow hal_graphics_allocator_default vndbinder_device:chr_file { read write ioctl open };
+allow hal_graphics_allocator_default vndservicemanager:binder { call transfer };
+allow hal_graphics_allocator_default sideband:binder { call transfer };
+allow hal_graphics_allocator_default sideband_service:service_manager find;
+allow hal_graphics_allocator_default untrusted_app:binder call;
+allow hal_graphics_allocator_default untrusted_app_25:binder call;
+allow hal_graphics_allocator_default untrusted_app_27:binder call;
+allow hal_graphics_allocator_default hal_graphics_mapper_hwservice:hwservice_manager find;
+allow hal_graphics_allocator_default sideband:fd use;

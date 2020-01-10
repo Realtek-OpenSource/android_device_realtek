@@ -1,0 +1,20 @@
+set_prop(hal_graphics_composer_default, rtk_prop)
+set_prop(hal_graphics_composer_default, hwc_prop)
+set_prop(hal_graphics_composer_default, hwc_per_prop)
+get_prop(hal_graphics_composer_default, rtk_prop)
+get_prop(hal_graphics_composer_default, hwc_prop)
+get_prop(hal_graphics_composer_default, hwc_per_prop)
+get_prop(hal_graphics_composer_default, hdmi_prop)
+
+allow hal_graphics_composer_default dvdplayer_device:chr_file rw_file_perms;
+allow hal_graphics_composer_default init:unix_stream_socket connectto;
+allow hal_graphics_composer_default property_socket:sock_file write;
+allow hal_graphics_composer_default hdmi_device:chr_file { read write ioctl open };
+allow hal_graphics_composer_default vndbinder_device:chr_file { read write ioctl open };
+allow hal_graphics_composer_default { sideband vndservicemanager hdmiutil }:binder { call transfer };
+allow hal_graphics_composer_default sideband_service:service_manager find;
+allow hal_graphics_composer_default { sw_sync_device tmpfs ion_device tee_device }:chr_file rw_file_perms;
+allow hal_graphics_composer_default sysfs_wake_lock:file { getattr open read };
+allow hal_graphics_composer_default sysfs:file { read write open };
+allow hal_graphics_composer_default vnd_hdmiutil_hwservice:hwservice_manager find;
+

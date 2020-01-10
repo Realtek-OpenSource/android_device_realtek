@@ -1,0 +1,4 @@
+service AudioUtilServer /vendor/bin/AudioUtilServer
+    class main
+    user system
+    group system

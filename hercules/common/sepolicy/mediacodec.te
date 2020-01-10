@@ -1,0 +1,22 @@
+allow mediacodec tmpfs:chr_file { read write open };
+get_prop(mediacodec, rtk_prop)
+get_prop(mediacodec, hwc_prop)
+set_prop(mediacodec, media_prop)
+set_prop(mediacodec, rtk_prop)
+set_prop(mediacodec, hwc_prop)
+binder_call(mediacodec, seserver)
+binder_call(mediacodec, sideband)
+
+# allow mediacodec default_android_vndservice:service_manager find;
+allow mediacodec init:unix_stream_socket connectto;
+allow mediacodec sideband_service:service_manager find;
+allow mediacodec system_file:dir { read open };
+allow mediacodec system_server:fifo_file rw_file_perms;
+allow mediacodec se_service:service_manager find;
+#allow mediacodec Hack_Sideband:fd use;
+allow mediacodec tmpfs:sock_file write;
+allow mediacodec audio_firmware:unix_stream_socket connectto;
+
+allow mediacodec hal_power_default:binder call;
+allow mediacodec hal_power_hwservice:hwservice_manager find;
+allow mediacodec { tee_device dvdplayer_device}:chr_file rw_file_perms;

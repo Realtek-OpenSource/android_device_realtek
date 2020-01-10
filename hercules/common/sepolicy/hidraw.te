@@ -1,0 +1,16 @@
+type hidraw, domain;
+type hidraw_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(hidraw)
+
+allow hidraw device:dir { read open };
+
+# Drop (user, group) to (nobody, nobody) 
+allow hidraw self:capability { setuid setgid };
+
+# Wake lock access 
+wakelock_use(hidraw)
+
+# Need to access dir /dev 
+allow hidraw device:dir { read open };
+allow hidraw hidraw_device:chr_file rw_file_perms;

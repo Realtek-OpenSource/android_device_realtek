@@ -1,0 +1,22 @@
+#Enable wake on network(Wifi/Ethernet)
+service wol_enable /vendor/bin/wol.sh 1
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:vendor_init:s0
+
+service wol_disable /vendor/bin/wol.sh 0
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:vendor_init:s0
+
+on property:persist.vendor.rtk.net.wol=1
+    start wol_enable
+
+on property:persist.vendor.rtk.net.wol=0
+    start wol_disable

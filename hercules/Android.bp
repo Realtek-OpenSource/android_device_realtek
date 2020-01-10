@@ -1,0 +1,4 @@
+subdirs = [
+    "common/prebuilt/proprietary"
+]
+

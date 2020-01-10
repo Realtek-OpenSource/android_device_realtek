@@ -1,0 +1,16 @@
+type  sideband_service,         vndservice_manager_type;
+type  hwmbinder_service,        vndservice_manager_type;
+type  dvcp_service,             vndservice_manager_type;
+type  se_service,               vndservice_manager_type;
+
+allow vndservicemanager hal_audio_default:dir search;
+allow vndservicemanager hal_audio_default:file { read open };
+allow vndservicemanager hal_audio_default:process getattr;
+
+allow vndservicemanager hal_graphics_composer_default:dir rw_dir_perms;
+allow vndservicemanager hal_graphics_composer_default:file rw_file_perms;
+allow vndservicemanager hal_graphics_composer_default:process getattr;
+
+allow vndservicemanager DvdPlayer:dir rw_dir_perms;
+allow vndservicemanager DvdPlayer:file rw_file_perms;
+allow vndservicemanager DvdPlayer:process getattr;

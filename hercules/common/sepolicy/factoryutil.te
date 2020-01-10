@@ -1,0 +1,21 @@
+type factoryutil, domain;
+type factoryutil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(factoryutil)
+
+hwbinder_use(factoryutil)
+add_hwservice(factoryutil, vnd_factoryutil_hwservice)
+
+vndbinder_use(factoryutil)
+get_prop(factoryutil, hwservicemanager_prop)
+allow factoryutil init:unix_stream_socket connectto;
+allow factoryutil alsadaemon_tmpfs:file { read getattr open ioctl write setattr };
+allow factoryutil factoryutil_tmpfs:file { create unlink open ioctl setattr };
+allow factoryutil tmpfs:dir { write ioctl setattr read remove_name open add_name create };
+allow factoryutil rtk_block_device:blk_file { read write open };
+#allow factoryutil self:capability { fowner chown dac_override fsetid};
+allow factoryutil self:capability { fowner chown fsetid};
+allow factoryutil sysfs:file { read open };
+allow factoryutil block_device:dir search;
+allow factoryutil hdmiutil_tmpfs:file { read getattr open ioctl };
+allow factoryutil factory_block_device:blk_file { read write open };

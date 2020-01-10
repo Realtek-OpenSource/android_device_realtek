@@ -1,0 +1,12 @@
+get_prop(vold, rtk_prop)
+allow vold self:capability net_raw;
+allow vold cifs:filesystem { mount unmount };
+allow vold ntfs:filesystem { mount unmount };
+allow vold ufsd:filesystem { mount unmount };
+allow vold btrfs:filesystem { mount unmount };
+allow vold hfsplus:filesystem { mount unmount };
+allow vold f2fs:filesystem { mount unmount };
+
+#============= vold ==============
+allow vold kernel:system module_request;
+allow vold storage_stub_file:dir { add_name open read write };

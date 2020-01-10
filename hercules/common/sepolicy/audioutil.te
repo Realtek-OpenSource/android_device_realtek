@@ -1,0 +1,20 @@
+type audioutil, domain;
+type audioutil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(audioutil)
+
+add_hwservice(audioutil, vnd_audioutil_hwservice)
+hwbinder_use(audioutil)
+get_prop(audioutil, hwservicemanager_prop)
+set_prop(audioutil, rtk_prop)
+allow audioutil vndbinder_device:chr_file { read write ioctl open };
+allow audioutil property_socket:sock_file write;
+allow audioutil init:unix_stream_socket connectto;
+
+allow audioutil tmpfs:chr_file { read write open };
+allow audioutil dvdplayer_device:chr_file rw_file_perms;
+
+allow audioutil system_file:dir r_dir_perms;
+allow audioutil rtk_prop:file { read open getattr};
+allow audioutil hidl_allocator_hwservice:hwservice_manager find;
+allow audioutil hidl_memory_hwservice:hwservice_manager find;

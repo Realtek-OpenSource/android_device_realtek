@@ -1,0 +1,90 @@
+<compatibility-matrix version="1.0" type="framework">
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.hdmiutil.provider</name>
+        <version>1.0</version>
+        <interface>
+            <name>IHdmiUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <!--
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.dptxutil.provider</name>
+        <version>1.0</version>
+        <interface>
+            <name>IDPTxUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    -->
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.allocator</name>
+        <transport>hwbinder</transport>
+        <impl level="generic"></impl>
+        <version>1.0</version>
+        <interface>
+            <name>IAllocator</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.audioutil</name>
+        <version>1.0</version>
+        <interface>
+            <name>IAudioUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.voututil</name>
+        <version>1.0</version>
+        <interface>
+            <name>IVoutUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <!--
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.factoryutil</name>
+        <version>1.0</version>
+        <interface>
+            <name>IFactoryUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.screenrecord</name>
+        <version>1.0</version>
+        <interface>
+            <name>IScreenRecordService</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    -->
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.rvsd</name>
+        <version>1.0</version>
+        <interface>
+            <name>IRvsd</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <!--
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.audioredirect</name>
+        <version>1.0</version>
+        <interface>
+            <name>IAudioRedirect</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    -->
+    <hal format="hidl" optional="true">
+        <name>vendor.realtek.audioredirectutil</name>
+        <version>1.0</version>
+        <interface>
+            <name>IAudioRedirectUtil</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</compatibility-matrix>

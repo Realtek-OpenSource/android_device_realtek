@@ -1,0 +1,121 @@
+#
+# Copyright (C) 2015-2019 Realtek Semiconductor Corporation
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+
+RM=/bin/rm -f
+CP=/bin/cp -f
+#CC= $(MYCC)
+#CXX= $(MYCXX)
+#AR= $(MYAR) cq
+#RANLIB= $(MYRANLIB)
+MYSTRIP= $(shell echo $(RANLIB) | sed 's/ranlib/strip/g')
+LIBNAME= rvsd_sp
+LIBNAME_SO=lib$(LIBNAME).so
+LIBNAME_A=lib$(LIBNAME).a
+
+LOCAL_PATH=.
+TOP=../../../..
+GENERIC_LINUX_PATH=$(TOP)/genericLinux
+
+
+############
+## source ##
+############
+LOCAL_SRC_FILES:=bdsp_decoder/BDSP_Decoder.cpp
+LOCAL_SRC_FILES+=bdsp_decoder/BDSP_Decoder_HL.cpp
+LOCAL_SRC_FILES+=dvdsp_decoder/SP.cpp 
+LOCAL_SRC_FILES+=dvbsp_decoder/DVBSP_Decoder_HL.cpp
+LOCAL_SRC_FILES+=dvbsp_decoder/DVBSP_Decoder.cpp
+LOCAL_SRC_FILES+=sp_common/sp_common.cpp
+LOCAL_SRC_FILES+=sp_common/sp_rpc.cpp
+LOCAL_SRC_FILES+=sp_common/sp_scale.cpp
+LOCAL_SRC_FILES+=sp_common/sp_dummy.cpp
+
+OBJ_FILES = $(addsuffix .o, $(basename $(LOCAL_SRC_FILES)))
+
+#############
+## include ##
+#############
+
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/src/xdr
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/include/xdr
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/generate/include
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/IPC/generate/include/system
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_ion
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/rtk_libs/common/fw_socket
+LOCAL_C_INCLUDES += $(TOP)/device/realtek/proprietary/libs/Include/RtkIpc
+LOCAL_C_INCLUDES += $(TOP)/system/core/include
+LOCAL_C_INCLUDES += $(TOP)/bionic/libc/kernel/common
+LOCAL_C_INCLUDES += $(TOP)/genericLinux/include
+
+MYINCLUDES = $(addprefix -I, $(LOCAL_C_INCLUDES))
+
+##################
+## compile flag ##
+##################
+MYDEFS := -Wall -g -fPIC
+MYDEFS += -Wno-multichar
+MYDEFS += -DUSE_RTK_VOUT_UTIL 
+MYDEFS += -DSPU_DECODE_ENABLE -DDVBSPDEC_ENABLED -DBDSPDEC_ENABLED -DLOCAL_BUILD_SP
+ifeq ($(TARGET_BOARD_PLATFORM), kylin)
+MYDEFS += -DRVSD_BDSP_YUV4K_2_RGB2K
+endif
+
+ifneq ($(TARGET_BOARD_PLATFORM), kylin)
+MYDEFS += -DBDSP_SEND_PHY_TO_VO
+MYDEFS += -DSP_SEND_PHY_TO_VO
+endif
+
+MYLDFLAGS := -shared
+#MYLDFLAGS += -lpthread
+#-ldl
+#MYLDFLAGS += $(shell $(PKG_CONFIG) --libs libalog RTK_lib rtk_ion)
+
+#####################
+#####  targets  #####
+#####################
+all: $(LIBNAME_A) inner_staging
+
+.PHONY: all clean inner_staging inner_install
+
+$(LIBNAME_A): $(OBJ_FILES) 
+	@echo ">>>->>>-->>>--- [archive $@] ---<<<--<<<-<<<"
+	@$(RM) $@
+	$(AR) cq $@ $(OBJ_FILES)
+	$(RANLIB) $@
+
+$(LIBNAME_SO): $(OBJ_FILES)
+	@echo "--->--->>--->>> [linking $@] <<<---<<---<---"
+	$(CXX) $(LDFLAGS) $^ -o $@ -shared $(MYLDFLAGS)
+
+inner_staging: $(LIBNAME_A)
+	@echo "========-------- [inner staging $^] --------========"
+	$(CP) pkgconfig/*.pc $(STAGING_DIR)/usr/lib/pkgconfig/
+	$(CP) pkgconfig/*.pc $(GENERIC_LINUX_PATH)/pkgconfig/
+	$(CP) $(LIBNAME_A) $(STAGING_DIR)/usr/lib/
+	$(CP) $(LIBNAME_A) $(GENERIC_LINUX_PATH)/lib/
+
+inner_install: $(LIBNAME_SO)
+	@echo "--------======== [inner install $^] ========--------"
+	@mkdir -p $(GENERIC_LINUX_PATH)/out/usr/lib
+	$(MYSTRIP) -o $(GENERIC_LINUX_PATH)/out/usr/lib/$(LIBNAME_SO) $(LIBNAME_SO)
+
+clean:
+	$(RM) $(OBJ_FILES) $(LIBNAME_SO) $(LIBNAME_A) $(MYTEST)
+
+.cpp.o:
+	@$(RM) $@
+	@echo -=--=--=- [$*.cpp] -=--=--=--=--=--=--=--=--=-
+	$(CXX) $(CFLAGS) $(MYDEFS) $(MYINCLUDES) -c $*.cpp -o $@
+
+.c.o:
+	@$(RM) $@
+	@echo --------- [$*.c] ---------------------------
+	$(CC) $(CFLAGS) $(MYDEFS) $(MYINCLUDES) -c $*.c -o $@

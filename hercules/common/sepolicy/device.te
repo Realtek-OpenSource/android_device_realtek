@@ -1,0 +1,24 @@
+# Attributes are not defined in /system/sepolicy
+type  hdmi_device,       dev_type;
+type  dptx_device,       dev_type;
+type  net_device,        dev_type;
+type  mcp_device,        dev_type;
+type  dvdplayer_device,  dev_type;
+type  rtk_bt_device,      dev_type;
+type  uctrl_device,      dev_type;
+type  hidraw_device,     dev_type;
+type  rtk_block_device,  dev_type;
+type  sw_sync_device,    dev_type;
+type  factory_block_device,  dev_type;
+type  one_step_info_device,  dev_type;
+type  hdcp_device,   dev_type;
+
+typeattribute device mlstrustedsubject;
+typeattribute proc mlstrustedsubject;
+typeattribute proc_stat mlstrustedsubject;
+typeattribute proc_uptime mlstrustedsubject;
+typeattribute sysfs mlstrustedsubject;
+typeattribute proc_modules mlstrustedsubject;
+typeattribute proc_interrupts mlstrustedsubject;
+typeattribute wifi_prop mlstrustedsubject;
+typeattribute sysfs_android_usb mlstrustedsubject;

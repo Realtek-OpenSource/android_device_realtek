@@ -1,0 +1,8 @@
+# TODO
+genfscon cifs / u:object_r:cifs:s0
+genfscon ntfs / u:object_r:ntfs:s0
+genfscon ufsd / u:object_r:ufsd:s0
+genfscon btrfs / u:object_r:btrfs:s0
+genfscon hfsplus / u:object_r:hfsplus:s0
+genfscon f2fs / u:object_r:f2fs:s0
+genfscon debugfs /mali u:object_r:debugfs_mali:s0

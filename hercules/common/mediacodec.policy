@@ -1,0 +1,7 @@
+# device specific syscalls
+pselect6: 1
+recvfrom: 1
+sendto: 1
+msync: 1
+sendmsg: 1
+fsync: 1

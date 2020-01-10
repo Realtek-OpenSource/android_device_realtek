@@ -1,0 +1,107 @@
+type DvdPlayer, domain;
+type DvdPlayer_exec, exec_type, vendor_file_type, file_type;
+typeattribute DvdPlayer data_between_core_and_vendor_violators;
+
+init_daemon_domain(DvdPlayer)
+net_domain(DvdPlayer)
+
+binder_call(DvdPlayer, seserver)
+
+#allow DvdPlayer self:capability { sys_nice setgid setuid dac_override};
+allow DvdPlayer self:capability { sys_nice setgid setuid };
+
+allow DvdPlayer { dvdplayer_device uio_device ion_device }:chr_file rw_file_perms;
+
+allow DvdPlayer { sysfs rtk_prop } :file  r_file_perms;
+allow DvdPlayer tmpfs:dir rw_dir_perms;
+allow DvdPlayer tmpfs:fifo_file create_file_perms;
+
+allow system_server mediaprovider:file w_file_perms;
+allow DvdPlayer mnt_media_rw_file:dir r_dir_perms;
+allow DvdPlayer rvsd:unix_stream_socket connectto;
+
+allow DvdPlayer vfat:dir r_dir_perms;
+allow DvdPlayer vfat:file r_file_perms;
+allow DvdPlayer ufsd:dir r_dir_perms;
+allow DvdPlayer ufsd:file r_file_perms;
+#allow DvdPlayer media_data_file:dir rw_dir_perms;
+#allow DvdPlayer media_data_file:file w_file_perms;
+allow DvdPlayer vendor_shell_exec:file x_file_perms;
+
+allow DvdPlayer self:tcp_socket create_socket_perms_no_ioctl;
+allow DvdPlayer self:udp_socket create_socket_perms_no_ioctl;
+allow DvdPlayer node:udp_socket node_bind;
+allow DvdPlayer port:udp_socket name_bind;
+allow DvdPlayer fwmarkd_socket:sock_file write;
+allow DvdPlayer port:tcp_socket name_connect;
+
+allow DvdPlayer DvdPlayer_tmpfs:file create_file_perms;
+
+allow DvdPlayer cifs:dir r_dir_perms;
+allow DvdPlayer cifs:file r_file_perms;
+
+allow DvdPlayer block_device:dir r_dir_perms;
+allow DvdPlayer loop_device:blk_file r_file_perms;
+#allow DvdPlayer media_data_file:file create_file_perms;
+allow DvdPlayer self:capability sys_admin;
+allow DvdPlayer tmpfs:dir create_dir_perms;
+allow DvdPlayer tmpfs:dir mounton;
+allow DvdPlayer unlabeled:filesystem mount;
+allow DvdPlayer unlabeled:filesystem unmount;
+allow DvdPlayer unlabeled:filesystem getattr;
+allow DvdPlayer unlabeled:dir r_dir_perms;
+allow DvdPlayer unlabeled:file r_file_perms;
+
+#============= netd ==============
+allow netd DvdPlayer:fd use;
+# Marked for ATM-1777,  ToDo: Need check for dlna/Samba
+#allow netd DvdPlayer:tcp_socket rw_socket_perms_no_ioctl;
+#allow DvdPlayer netd:unix_stream_socket connectto;
+allow netd DvdPlayer:tcp_socket { read getattr write setattr lock append bind getopt setopt shutdown };
+
+#============= rvsd ==============
+allow rvsd DvdPlayer:fd use;
+allow rvsd DvdPlayer:unix_stream_socket connectto;
+allow rvsd dvdplayer_device:chr_file rw_file_perms;
+allow rvsd ion_device:chr_file rw_file_perms;
+allow rvsd video_device:chr_file rw_file_perms;
+allow rvsd platform_app:binder { call transfer };
+
+#============= voututil ==============
+allow voututil dvdplayer_device:chr_file rw_file_perms;
+
+#typeattribute mediaserver socket_between_core_and_vendor_violators;
+#typeattribute DvdPlayer socket_between_core_and_vendor_violators;
+
+# For SubTitle
+allow DvdPlayer vndbinder_device:chr_file rw_file_perms;
+allow DvdPlayer vndservicemanager:binder { call transfer };
+allow DvdPlayer se_service:service_manager find;
+allow DvdPlayer vendor_data_file:file create_file_perms;
+allow DvdPlayer vendor_data_file:dir rw_dir_perms;
+allow DvdPlayer sdcardfs:dir r_dir_perms;
+allow DvdPlayer sdcardfs:file r_file_perms;
+allow DvdPlayer storage_file:dir r_dir_perms;
+
+allow DvdPlayer device:dir { rw_dir_perms create mounton rmdir };
+allow DvdPlayer device:fifo_file create_file_perms;
+get_prop(DvdPlayer , media_prop)
+allow system_app vnd_voututil_hwservice:hwservice_manager find;
+binder_call(system_app, voututil)
+allow DvdPlayer vendor_toolbox_exec:file execute_no_trans;
+
+allow DvdPlayer self:capability2 block_suspend;
+allow DvdPlayer sysfs_wake_lock:file rw_file_perms;
+
+
+#============= DvdPlayer ==============
+allow DvdPlayer media_rw_data_file:dir r_dir_perms;
+allow DvdPlayer media_rw_data_file:file r_file_perms;
+allow DvdPlayer sysfs_net:dir search;
+allow DvdPlayer netd:unix_stream_socket connectto;
+
+#============= platform_app ==============
+allow platform_app rvsd:binder { call transfer };
+allow platform_app vnd_rvsd_hwservice:hwservice_manager find;
+allow platform_app voututil:binder call;
+allow platform_app vnd_voututil_hwservice:hwservice_manager find;

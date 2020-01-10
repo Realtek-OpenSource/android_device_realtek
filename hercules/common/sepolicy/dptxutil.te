@@ -1,0 +1,36 @@
+type dptxutil, domain;
+type dptxutil_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(dptxutil)
+
+hwbinder_use(dptxutil)
+add_hwservice(dptxutil, vnd_dptxutil_hwservice)
+
+vndbinder_use(dptxutil)
+get_prop(dptxutil, hwservicemanager_prop)
+allow dptxutil ctl_default_prop:property_service set;
+allow dptxutil dptx_device:chr_file { read write ioctl open getattr };
+allow dptxutil init:unix_stream_socket connectto;
+allow dptxutil ion_device:chr_file { read ioctl open };
+allow dptxutil property_socket:sock_file write;
+allow dptxutil self:netlink_kobject_uevent_socket { read bind create setopt };
+allow dptxutil sysfs:file { read getattr open };
+allow dptxutil alsadaemon_tmpfs:file { getattr open read write };
+allow dptxutil factoryutil:binder call;
+allow dptxutil tmpfs:dir { read write add_name };
+allow dptxutil dptxutil_tmpfs:file { create open };
+allow dptxutil factoryutil_tmpfs:file { read write open getattr };
+allow dptxutil one_step_info_device:blk_file { read write getattr open };
+allow dptxutil vnd_factoryutil_hwservice:hwservice_manager find;
+allow dptxutil hwmbinder_service:service_manager find;
+allow dptxutil hdcp_device:chr_file { read write ioctl open getattr};
+allow dptxutil block_device:dir search;
+allow dptxutil rtkhwmbinder:binder call;
+allow dptxutil hal_graphics_composer_default:binder call;
+allow system_app dptxutil:binder call;
+allow dptxutil system_app:binder call;
+allow dptxutil hdmiutil:binder { call transfer };
+allow dptxutil vnd_hdmiutil_hwservice:hwservice_manager find;
+allow dptxutil sysfs_switch:dir search;
+set_prop(dptxutil, rtk_prop)
+set_prop(dptxutil, dptx_prop)

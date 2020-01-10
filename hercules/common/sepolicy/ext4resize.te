@@ -1,0 +1,17 @@
+type ext4resize, domain;
+type ext4resize_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(ext4resize)
+
+allow ext4resize cache_block_device:blk_file { read write getattr open ioctl };
+allow ext4resize rootfs:file { getattr open read execute execute_no_trans };
+allow ext4resize block_device:dir r_dir_perms;
+
+allow ext4resize { userdata_block_device system_block_device }:blk_file r_file_perms;
+allow ext4resize ext4resize_tmpfs:file create_file_perms;
+allow ext4resize tmpfs:dir w_dir_perms;
+allow ext4resize { properties_device sysfs }:dir r_dir_perms;
+allow ext4resize { proc_stat proc }:file r_file_perms;
+
+# Neverallow
+# allow ext4resize system_block_device:blk_file write;

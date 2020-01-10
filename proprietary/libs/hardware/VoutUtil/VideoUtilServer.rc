@@ -1,0 +1,4 @@
+service VideoUtilServer /vendor/bin/VideoUtilServer
+    class main
+    user system
+    group system

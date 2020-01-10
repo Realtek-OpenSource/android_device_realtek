@@ -1,0 +1,4 @@
+service AudioRedirector /vendor/bin/AudioRedirector
+    class main
+    user media
+    group audio

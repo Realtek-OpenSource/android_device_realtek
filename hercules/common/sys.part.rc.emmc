@@ -1,0 +1,4 @@
+/dev/block/platform/98012000.emmc/by-name/system    /system
+/dev/block/platform/98012000.emmc/by-name/data      /data
+/dev/block/platform/98012000.emmc/by-name/cache     /cache
+/dev/block/platform/98012000.emmc/by-name/vendor    /vendor

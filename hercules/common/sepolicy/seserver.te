@@ -1,0 +1,12 @@
+type seserver, domain;
+type seserver_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(seserver)
+
+add_service(seserver, se_service)
+vndbinder_use(seserver)
+binder_call(seserver, mediacodec)
+allow seserver uctrl_device:chr_file { open read write ioctl };
+allow seserver uio_device:chr_file { open read write };
+allow seserver sysfs_se:file r_file_perms;
+allow seserver sysfs_se:dir search;

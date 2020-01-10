@@ -1,0 +1,12 @@
+type audioredirect, domain;
+type audioredirect_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(audioredirect)
+
+add_hwservice(audioredirect, vnd_audioredirect_hwservice)
+hwbinder_use(audioredirect)
+get_prop(audioredirect, hwservicemanager_prop)
+allow audioredirect vndbinder_device:chr_file { read write ioctl open };
+allow audioredirect property_socket:sock_file write;
+allow audioredirect init:unix_stream_socket connectto;
+binder_call(audioredirect, vndservicemanager)

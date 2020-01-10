@@ -1,0 +1,25 @@
+type fbinit, domain;
+type fbinit_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(fbinit)
+
+allow fbinit dvdplayer_device:chr_file rw_file_perms;
+allow fbinit graphics_device:chr_file { read write ioctl open };
+allow fbinit ion_device:chr_file { read write ioctl open };
+#allow fbinit self:capability { sys_nice dac_override };
+allow fbinit self:capability { sys_nice };
+allow fbinit graphics_device:dir search;
+
+# allow fbinit shell_exec:file execute; neverallow
+allow fbinit tmpfs:dir { add_name write read remove_name create open setattr };
+#allow fbinit fbinit_tmpfs:file { create ioctl unlink open setattr };
+allow fbinit rootfs:file { read getattr open execute execute_no_trans };
+allow fbinit self:capability { fowner chown fsetid };
+allow fbinit system_data_file:dir getattr;
+
+allow fbinit vendor_shell_exec:file execute_no_trans;
+
+allow fbinit sysfs:file r_file_perms;
+allow fbinit block_device:dir r_dir_perms;
+allow fbinit rtk_block_device:blk_file rw_file_perms;
+allow fbinit vendor_toolbox_exec:file execute_no_trans;

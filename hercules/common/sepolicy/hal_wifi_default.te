@@ -1,0 +1,8 @@
+domain_trans(init, hal_wifi_default_exec, hal_wifi_default)
+domain_auto_trans(init, hal_wifi_default_exec, hal_wifi_default)
+
+allow  hal_wifi_default  proc_modules:file  r_file_perms;
+allow  hal_wifi_default  self:capability  sys_module;
+allow  hal_wifi_default  kernel:key  search;
+allow  hal_wifi_default  { vendor_file }:system  module_load;
+r_dir_file(hal_wifi_default, { vendor_file })

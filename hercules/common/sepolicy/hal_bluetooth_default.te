@@ -1,0 +1,35 @@
+# Socket creation under /data/misc/bluedroid.
+type_transition hal_bluetooth_default bluetooth_data_file:sock_file bluetooth_socket;
+typeattribute hal_bluetooth_default hal_telephony_server;
+# Allow access to net_admin ioctls
+allowxperm hal_bluetooth_default self:udp_socket ioctl priv_sock_ioctls;
+
+allow hal_bluetooth_default rtk_bt_device:chr_file rw_file_perms;
+
+# Socket creation under /data/misc/bluedroid.
+#allow hal_bluetooth_default bluetooth_socket:sock_file create_file_perms;
+allow hal_bluetooth_default self:capability net_admin; 
+
+allow hal_bluetooth_default rtk_bt_device:chr_file { rw_file_perms };
+# allow hal_bluetooth_default self:udp_socket create_socket_perms; neverallow
+# allow hal_bluetooth_default hal_bluetooth_default:udp_socket create; neverallow
+allow hal_bluetooth_default sysfs:file write;
+allow hal_bluetooth_default serial_device:chr_file rw_file_perms;
+
+# disabled for ATM-2203, Policy exempts domains from sharing files by path between core and vendor[hal_bluetooth_default]
+#typeattribute hal_bluetooth_default data_between_core_and_vendor_violators; #WARNING this will cause GtsSecurityHostTestCases com.google.android.security.gts.SELinuxHostTest#testNoExemptionsForDataBetweenCoreAndVendor failed
+#allow hal_bluetooth_default bluetooth_data_file:dir create_dir_perms;
+#allow hal_bluetooth_default bluetooth_data_file:file create_file_perms;
+allow hal_bluetooth_default self:udp_socket create_socket_perms;
+
+#============= audio_firmware ==============
+#allow audio_firmware self:capability dac_override;
+
+#============= audioutil ==============
+allow audioutil self:netlink_kobject_uevent_socket create_socket_perms_no_ioctl;
+allow audioutil sysfs_switch:dir search;
+#============= hal_audio_default ==============
+allow hal_audio_default hal_bluetooth_default:unix_stream_socket create_stream_socket_perms;
+allow hal_audio_default hal_bluetooth_default:unix_stream_socket connectto;
+#============= netd ==============
+#allow netd system_file:dir write;

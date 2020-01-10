@@ -1,0 +1,13 @@
+allow tee tee_device:chr_file {rw_file_perms read write open};
+allow tee {tmpfs block_device}:dir create_dir_perms;
+allow tee self:capability { chown dac_override sys_rawio};
+allow tee sysfs:file r_file_perms;
+allow tee rtk_block_device:blk_file r_file_perms;
+allow tee tee_device:blk_file {ioctl read write open};
+allow tee vendor_shell_exec:file execute_no_trans;
+allow tee vendor_file:file execute_no_trans;
+allow tee vendor_toolbox_exec:file execute_no_trans;
+allow tee proc:file {open read};
+allow tee tee_tmpfs:file {create append open};
+allow tee block_device:dir {search};
+allow tee system_data_file:dir getattr;

@@ -1,0 +1,22 @@
+get_prop(platform_app, rtk_prop)
+get_prop(platform_app, media_prop)
+get_prop(platform_app, afbc_prop)
+#get_prop(platform_app, gralloc_prop)
+
+#allow platform_app gralloc_prop:file read;
+allow platform_app afbc_prop:file read;
+allow platform_app system_app_data_file:dir getattr;
+allow platform_app debugfs_mali:dir r_dir_perms;
+allow platform_app audioutil:binder { call transfer };
+allow platform_app vnd_audioutil_hwservice:hwservice_manager find;
+#allow platform_app sysfs:file read;
+
+allow platform_app sysfs_switch:dir search;
+allow platform_app sysfs_switch:file { getattr open read };
+
+#allow platform_app sysfs_hdmirx:dir search;
+#allow platform_app sysfs_hdmirx:file { getattr open read };
+
+allow platform_app ufsd:file read;
+
+allow platform_app unlabeled:file read;

@@ -1,0 +1,7 @@
+allow untrusted_app_27 sideband:fd use;
+get_prop(untrusted_app_27, netflix_prop)
+allow untrusted_app_27 ufsd:file r_file_perms;
+allow untrusted_app_27 ufsd:dir r_dir_perms;
+
+allow untrusted_app_27 unlabeled:file r_file_perms;
+allow untrusted_app_27 unlabeled:dir r_dir_perms;

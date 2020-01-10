@@ -1,0 +1,26 @@
+type audio_firmware, domain;
+type audio_firmware_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(audio_firmware)
+
+#============= audio_firmware ==============
+#allow audio_firmware self:capability dac_read_search;
+#allow audio_firmware self:capability dac_override;
+# allow audio_firmware self:capability { sys_nice dac_override };
+allow audio_firmware self:capability { sys_nice };
+
+#allow audio_firmware tmpfs:chr_file read;
+#allow audio_firmware tmpfs:chr_file open;
+#allow audio_firmware tmpfs:chr_file write;
+allow audio_firmware tmpfs:dir { add_name write read remove_name create open setattr };
+
+allow audio_firmware dvdplayer_device:chr_file rw_file_perms;
+
+allow audio_firmware tmpfs:sock_file { write read create open setattr };
+
+allow audio_firmware uio_device:chr_file r_file_perms;
+allow audio_firmware ion_device:chr_file { read open ioctl };
+allow audio_firmware mediacodec:fd use;
+
+
+

@@ -1,0 +1,14 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=${exec_prefix}/lib
+includedir=${exec_prefix}/include/rtk-platform-libs
+
+Name: Realtek RVSD SP library
+Description: Realtek RVSD SP library
+Version: 1.0
+Requires:
+Requires.private: libalog RTK_lib rtk_ion
+Libs: -L${libdir} -lrvsd_sp
+Libs.private:
+Cflags: -I${includedir} \
+-I${includedir}/device/realtek/video/rvsd_sp

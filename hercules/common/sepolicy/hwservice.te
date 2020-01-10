@@ -1,0 +1,9 @@
+type  vnd_audioredirect_hwservice,  hwservice_manager_type;
+type  vnd_audioutil_hwservice,  hwservice_manager_type;
+type  vnd_voututil_hwservice,   hwservice_manager_type;
+type  vnd_rvsd_hwservice,       hwservice_manager_type;
+type  vnd_hdmiutil_hwservice,   hwservice_manager_type;
+type  vnd_dptxutil_hwservice,   hwservice_manager_type;
+type  vnd_factoryutil_hwservice, hwservice_manager_type;
+type  vnd_screenrecord_hwservice, hwservice_manager_type;
+type  vnd_audioredirectutil_hwservice,   hwservice_manager_type;

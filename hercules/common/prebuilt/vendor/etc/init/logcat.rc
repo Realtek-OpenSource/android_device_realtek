@@ -1,0 +1,10 @@
+service logcat /vendor/bin/logcat.sh
+    class main
+    user system
+    group system
+    oneshot
+    disabled
+
+on property:persist.debug.logcat=1
+    start logcat
+

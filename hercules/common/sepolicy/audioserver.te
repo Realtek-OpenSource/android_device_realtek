@@ -1,0 +1,10 @@
+binder_call(audioserver, AudioRedirector)
+
+#allow audioserver vendor_file:file { getattr open read };
+allow audioserver audioutil:binder call;
+
+allow audioserver vnd_audioutil_hwservice:hwservice_manager find;
+
+#allow audioserver rtk_prop:file { getattr open read };
+get_prop(audioserver, rtk_prop)
+allow audioserver mediaserver_service:service_manager { find };

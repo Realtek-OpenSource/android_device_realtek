@@ -1,0 +1,372 @@
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
+
+    # unlimited logging to /dev/kmsg, use trailing _ char instead of new-line char
+    write /proc/sys/kernel/printk_devkmsg on_
+
+    # performance governor
+    #write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    #write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
+    #write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
+    #write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
+
+    # interactive governor
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads 80
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1400000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 99
+    write /sys/devices/system/cpu/cpufreq/interactive/boost 1
+
+    insmod /system/vendor/lib/modules/mali.ko
+on init
+    start watchdogd
+
+    # start console earlier
+    #start console
+
+    # Support legacy paths
+    symlink /sdcard /mnt/sdcard
+    symlink /sdcard /storage/sdcard0
+
+    # ZRAM
+    write /sys/block/zram0/comp_algorithm lz4
+    write /sys/block/zram0/max_comp_streams 4
+    write /proc/sys/vm/page-cluster 0
+    write /proc/sys/vm/swappiness 100
+
+    mkdir /tmp 0775 root system
+    mount tmpfs tmpfs /tmp mode=0775,uid=0,gid=1000
+    mkdir /dev/socket/pdx 0775 system system
+    mkdir /dev/socket/pdx/system 0775 system system
+    mkdir /dev/socket/pdx/system/vr 0775 system system
+    mkdir /dev/socket/pdx/system/vr/display 0775 system system
+    mkdir /dev/socket/pdx/system/vr/pose 0775 system system
+    mkdir /dev/socket/pdx/system/vr/sensors 0775 system system
+
+on fs
+    # Start HW service manager early
+    start hwservicemanager
+    mount_all /vendor/etc/fstab.${ro.hardware} --early
+
+    mkdir /factory 0775 radio radio
+
+    setprop persist.vendor.storage.resizefs 1
+
+on late-fs
+    # Start services for bootanim
+    start hdmiutil-1-0
+    start surfaceflinger
+    start bootanim
+    start vendor.hwcomposer-2-2
+    start vendor.configstore-hal
+    start vendor.gralloc-2-1
+
+    # Wait for hwservicemanager ready since fsck might be triggered in mount_all --late
+    # In such case, init won't responce the property_set from hwservicemanager and then
+    # cause services for bootanim not running.
+    wait_for_prop hwservicemanager.ready true
+    # Mount RW partitions which need run fsck
+    mount_all /vendor/etc/fstab.${ro.hardware} --late
+
+    # boot time fs tune
+    write /sys/block/mmcblk0/queue/iostats 0
+    write /sys/block/mmcblk0/queue/scheduler cfq
+    write /sys/block/mmcblk0/queue/iosched/slice_idle 0
+    write /sys/block/mmcblk0/queue/nr_requests 256
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/dm-0/queue/read_ahead_kb 2048
+    write /sys/block/dm-1/queue/read_ahead_kb 2048
+
+on post-fs-data
+    # set RLIMIT_MEMLOCK to 8MB
+    setrlimit 8 8388608 8388608
+
+    # We can start netd here before in is launched in common init.rc on zygote-start
+    start netd
+
+    mkdir /data/radio 0775 radio radio
+    mkdir /data/radio/log 0775 radio radio
+
+    chmod 0660 /data/misc/wifi/wpa_supplicant.conf
+
+    setprop service.adb.tcp.port 5555
+
+    #PPPoE conf folder
+    mkdir /data/misc/ppp 0775 system system
+
+    # hdcp
+    mkdir /data/vendor/hdcp 0775 system system
+    
+    # key tmp
+    mkdir /data/vendor/tmp 0775 system system
+
+    # tee
+    mkdir /data/vendor/tee 0700 system system
+    mkdir /data/vendor/mediadrm 0770 media mediadrm
+
+    # DvdPlayer
+    mkdir /data/vendor/misc 0770 media media
+    mkdir /data/vendor/misc/media 0770 media media
+
+# zygote need to be started after otapreopt which will be done on post-fs-data
+on zygote-start
+    # zygote is started in common init.rc
+    # and now we can continue initialize /data/
+    mkdir /data/tombstones 0771 system system
+    mkdir /tombstones/modem 0771 system system
+    mkdir /tombstones/lpass 0771 system system
+    mkdir /tombstones/wcnss 0771 system system
+    mkdir /tombstones/dsps 0771 system system
+    mkdir /persist/data/sfs 0700 system system
+    mkdir /persist/data/tz 0700 system system
+    mkdir /data/misc/dts 0770 media audio
+    mkdir /data/misc/tloc/ 0700 system drmrpc
+    mkdir /data/misc/qvop 0660 system system
+    mkdir /data/misc/audio_pp 0771 media audio
+    mkdir /data/preloads 0775 system system
+    mkdir /data/preloads/media 0775 system system
+    mkdir /data/preloads/demo 0775 system system
+    mkdir /data/misc/netmgr 0770 system radio
+
+    mkdir /data/media 0770 media_rw media_rw
+    chown media_rw media_rw /data/media
+
+    # Create the directories used by the Wireless subsystem
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+    mkdir /data/vendor/wifi 0771 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
+
+    # Create directory used by audio subsystem
+    mkdir /data/vendor/audio 0770 audio audio
+
+    mkdir /data/audio/ 0770 media audio
+
+    setprop vold.post_fs_data_done 1
+
+on early-boot
+
+on boot
+    # Update cpusets to boot-time values, will update again on boot complete
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
+
+    # insert paragon kernel module
+    insmod /system/vendor/lib/modules/jnl.ko
+    insmod /system/vendor/lib/modules/ufsd.ko
+
+    # insert btusb kernel module
+    insmod /system/vendor/lib/modules/rtk_btusb.ko
+
+    #insert cvbs detect kernel module
+    insmod /system/vendor/lib/modules/cvbs_switch.ko
+
+    chown system system /sys/kernel/suspend/mode
+    chmod 0664 /sys/kernel/suspend/mode
+    chown system system /sys/kernel/suspend/context
+    chmod 0664 /sys/kernel/suspend/context
+    chown system system /sys/kernel/suspend/watchdog_timer_sec
+    chmod 0664 /sys/kernel/suspend/watchdog_timer_sec
+    chown system system /sys/kernel/suspend/watchdog_en
+    chmod 0664 /sys/kernel/suspend/watchdog_en
+    chown system system /sys/class/rtk_pm/android_control/pm_state
+    chmod 0665 /sys/class/rtk_pm/android_control/pm_state
+    chown system system /sys/class/rtk_pm/android_control/pm_wakelock_mode
+    chmod 0665 /sys/class/rtk_pm/android_control/pm_wakelock_mode
+    chown system system /sys/class/rtk_pm/android_control/pm_block_wakelock
+    chmod 0665 /sys/class/rtk_pm/android_control/pm_block_wakelock
+
+    # gpu
+    chown system system /sys/kernel/debug/mali/pp/num_cores_total
+    chmod 0666 /sys/kernel/debug/mali/pp/num_cores_total
+    chown system system /sys/kernel/debug/mali/pp/num_cores_enabled
+    chmod 0666 /sys/kernel/debug/mali/pp/num_cores_enabled
+    chown system system /sys/class/devfreq/981d0000.gpu/cur_freq
+    chmod 0666 /sys/class/devfreq/981d0000.gpu/cur_freq
+    chown system /sys/class/devfreq/981d0000.gpu/max_freq
+    chmod 0666 /sys/class/devfreq/981d0000.gpu/max_freq
+    chown system system /sys/class/devfreq/981d0000.gpu/min_freq
+    chmod 0666 /sys/class/devfreq/981d0000.gpu/min_freq
+
+    # bluetooth
+    # change back to bluetooth from system
+    chown bluetooth net_bt_admin /data/misc/bluetooth
+    mkdir /data/misc/bluedroid 0770 bluetooth net_bt_admin
+    # bluetooth LPM
+    chown bluetooth net_bt_admin /proc/bluetooth/sleep/lpm
+    chown bluetooth net_bt_admin /proc/bluetooth/sleep/btwrite
+
+    #UART device
+    chmod 0660 /dev/ttyS1
+    chown bluetooth net_bt_admin /dev/ttyS1
+
+    # rfkill
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /sys/class/rfkill/rfkill0/type
+    chown bluetooth net_bt_admin /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_admin /sys/class/rfkill/rfkill0/type
+    write /sys/class/rfkill/rfkill0/state 0
+
+    # bluetooth MAC address programming
+    chown bluetooth net_bt_admin ro.bt.bdaddr_path
+    chown bluetooth net_bt_admin /system/etc/bluetooth
+    chown bluetooth net_bt_admin /data/misc/bluetooth
+    #setprop ro.bt.bdaddr_path "/data/misc/bluetooth/bdaddr"
+
+    setprop wifi.interface wlan0
+
+    # Remove SUID bit for iproute2 ip tool
+    chmod 0755 /system/bin/ip
+
+    # Assign TCP buffer thresholds to be ceiling value of technology maximums
+    # Increased technology maximums should be reflected here.
+    write /proc/sys/net/core/rmem_max  8388608
+    write /proc/sys/net/core/wmem_max  8388608
+
+    # To prevent out of order acknowledgements from making
+    # connection tracking to treat them as not belonging to
+    # the connection they belong to.
+    # Otherwise, a weird issue happens in which some long
+    # connections on high-throughput links get dropped when
+    # an ack packet comes out of order
+    write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
+
+    # In LowRam device we need swap emmc device
+    swapon_all /vendor/etc/fstab.${ro.hardware}.lowram
+
+# bugreport is triggered by holding down volume down, volume up and power
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/data/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
+    oneshot
+    keycodes 114 115 116
+    seclabel u:r:dumpstate:s0
+
+#service boothercules /sbin/boothercules.sh
+#    class main
+#    oneshot
+#    #disabled
+
+#service boothercules /sbin/usb_suspend.sh
+#    class main
+#    oneshot
+
+on property:persist.vendor.dvdlog=1
+    restart DvdPlayer
+
+on property:persist.vendor.dvdlog=0
+    restart DvdPlayer
+
+on property:ro.debuggable=1
+    # install busybox symbolic links
+    #mkdir /system/vendor/bin
+    #start busybox_link
+
+    # start gatord
+    #insmod /system/vendor/lib/modules/gator.ko
+    #start gatord
+
+on property:sys.boot_completed=1
+    class_start delay_start
+
+    # update cpusets now that boot is complete and we want better load balancing
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-2
+
+    # end boot time fs tune
+    write /sys/block/mmcblk0/queue/iostats 1
+    #write /sys/block/mmcblk0/queue/scheduler deadline
+    write /sys/block/mmcblk0/queue/nr_requests 128
+    write /sys/block/mmcblk0/queue/read_ahead_kb 128
+    write /sys/block/dm-0/queue/read_ahead_kb 128
+    write /sys/block/dm-1/queue/read_ahead_kb 128
+
+    # insert usb ethernet kernel module
+    #insmod /system/vendor/lib/modules/usbnet.ko
+    #insmod /system/vendor/lib/modules/net1080.ko
+
+    # Used immediately below
+    trigger sys-boot-completed-set
+
+#on property:persist.vendor.rtk.screenoff.suspend=1
+#    write /sys/class/rtk_pm/android_control/pm_wakelock_mode 1
+
+#on property:persist.vendor.rtk.screenoff.suspend=0
+#    write /sys/class/rtk_pm/android_control/pm_wakelock_mode 0
+
+# We want one opportunity per boot to enable zram, so we
+# use a trigger we fire from the above stanza. If
+# persist.sys.zram_enabled becomes true after boot,
+# we don't want to run swapon_all at that time.
+on sys-boot-completed-set && property:persist.sys.zram_enabled=1
+    swapon_all /vendor/etc/fstab.${ro.hardware}
+
+#on property:sys.boot_completed=1 && property:ro.build.type=user
+#    write /proc/sys/kernel/modules_disabled 1
+
+on property:persist.vendor.rtk.hdmirx.version=1.4
+    write /sys/devices/platform/98037000.hdmirx/edid_version 1.4
+
+on property:persist.vendor.rtk.hdmirx.version=2.0
+    write /sys/devices/platform/98037000.hdmirx/edid_version 2.0
+
+# the following settings are used to disable ipv6 on cellular networks that cannot
+# support it.
+on property:ril.ipv6.rmnet0.enable=1
+    write /proc/sys/net/ipv6/conf/rmnet0/disable_ipv6 0
+
+on property:ril.ipv6.rmnet0.enable=0
+    write /proc/sys/net/ipv6/conf/rmnet0/disable_ipv6 1
+
+on property:ril.ipv6.rmnet1.enable=1
+    write /proc/sys/net/ipv6/conf/rmnet1/disable_ipv6 0
+
+on property:ril.ipv6.rmnet1.enable=0
+    write /proc/sys/net/ipv6/conf/rmnet1/disable_ipv6 1
+
+#Realtek wireless extension actions.
+on property:vendor.net.wifi.ext.actions=1
+    write /sys/class/net/wlan0/queues/rx-0/rps_cpus f
+    write /sys/class/net/wlan0/queues/rx-1/rps_cpus f
+    write /sys/class/net/wlan0/queues/rx-2/rps_cpus f
+    write /sys/class/net/wlan0/queues/rx-3/rps_cpus f
+    write /sys/class/net/p2p0/queues/rx-0/rps_cpus f
+    write /sys/class/net/p2p0/queues/rx-1/rps_cpus f
+    write /sys/class/net/p2p0/queues/rx-2/rps_cpus f
+    write /sys/class/net/p2p0/queues/rx-3/rps_cpus f
+
+service chperformance /vendor/bin/chperformance.sh
+    disabled
+    oneshot
+    #seclabel u:r:realtek:s0
+
+service chinteractive /vendor/bin/chinteractive.sh
+    disabled
+    oneshot
+    #seclabel u:r:realtek:s0
+
+on property:persist.vendor.rtk.performancemode=1
+    #start chperformance
+    write /sys/devices/system/cpu/cpufreq/interactive/boost 1
+
+#on property:persist.vendor.rtk.performancemode=0
+#    #start chinteractive
+#    write /sys/devices/system/cpu/cpufreq/interactive/boost 0
+
+on property:sys.boot_completed=1 && property:persist.vendor.rtk.performancemode=0
+    write /sys/devices/system/cpu/cpufreq/interactive/boost 0
+

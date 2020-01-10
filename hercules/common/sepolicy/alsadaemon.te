@@ -1,0 +1,25 @@
+type alsadaemon, domain;
+type alsadaemon_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(alsadaemon)
+
+allow alsadaemon dvdplayer_device:chr_file rw_file_perms;
+allow alsadaemon graphics_device:chr_file { read write ioctl open };
+allow alsadaemon ion_device:chr_file { read write ioctl open };
+#allow alsadaemon self:capability { sys_nice dac_override };
+allow alsadaemon self:capability { sys_nice };
+allow alsadaemon graphics_device:dir search;
+
+# allow alsadaemon shell_exec:file execute; neverallow
+allow alsadaemon tmpfs:dir { add_name write read remove_name create open setattr };
+allow alsadaemon alsadaemon_tmpfs:file { create ioctl unlink open setattr };
+allow alsadaemon rootfs:file { read getattr open execute execute_no_trans };
+allow alsadaemon self:capability { fowner chown fsetid };
+allow alsadaemon system_data_file:dir getattr;
+
+allow alsadaemon vendor_shell_exec:file execute_no_trans;
+
+allow alsadaemon sysfs:file r_file_perms;
+allow alsadaemon block_device:dir r_dir_perms;
+allow alsadaemon rtk_block_device:blk_file rw_file_perms;
+allow alsadaemon vendor_toolbox_exec:file execute_no_trans;

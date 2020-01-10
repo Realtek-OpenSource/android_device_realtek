@@ -1,0 +1,13 @@
+type hidraw_service, service_manager_type;
+
+# For widevine
+type drmplugin_service, service_manager_type;
+
+# For DvdPlayer
+type DvdPlayer_service, service_manager_type;
+
+# For AudioRedirector
+type AudioRedirector_service, service_manager_type;
+
+# For hack sideband
+#type Hack_Sideband_service, service_manager_type;

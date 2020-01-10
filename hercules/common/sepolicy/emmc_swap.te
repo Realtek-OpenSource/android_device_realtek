@@ -1,0 +1,26 @@
+type emmc_swap, domain;
+type emmc_swap_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(emmc_swap)
+
+allow emmc_swap proc:file r_file_perms;
+allow emmc_swap rootfs:file rx_file_perms;
+allow emmc_swap properties_device:dir read;
+allow emmc_swap cgroup:dir read;
+allow emmc_swap { device input_device fscklogs graphics_device audio_device block_device sysfs_zram sysfs devpts}:dir r_dir_perms;
+allow emmc_swap { userdata_block_device ram_device block_device }:blk_file { getattr ioctl };
+allow emmc_swap rtk_block_device:blk_file r_file_perms;
+allow emmc_swap loop_device:blk_file { getattr ioctl};
+allow emmc_swap ram_device:blk_file { open read };
+
+# Android P ####
+allow emmc_swap { one_step_info_device misc_block_device tee_device }:blk_file getattr;
+allow emmc_swap sysfs:file r_file_perms;
+allow emmc_swap { factory_block_device system_block_device cache_block_device swap_block_device}:blk_file r_file_perms;
+
+
+# Never allow
+# allow emmc_swap ram_device:blk_file read;
+# allow emmc_swap block_device:blk_file read;
+# allow emmc_swap misc_block_device:blk_file ioctl;
+# allow emmc_swap self:capability dac_override;

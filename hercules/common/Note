@@ -1,0 +1,4 @@
+Used flag RTK_FRAMEEORK_FLOW for enable realtek framework flow. The below folder are realtek modified.
+# frameworks/native/libs/gui
+# frameworks/av/media/libstagefright
+

@@ -1,0 +1,7 @@
+cc_library_shared {
+    srcs: ["HDMILib.cpp"],
+    shared_libs: ["libutils"] + ["liblog"] + ["vendor.realtek.hdmiutil.provider@1.0"] + ["libhidlbase"] + ["libhidltransport"],
+    include_dirs: ["system/core/libutils/include/utils"],
+    name: "libHDMILib",
+    vendor_available: true,
+}

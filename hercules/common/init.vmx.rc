@@ -1,0 +1,18 @@
+on early-init
+    symlink /fstab.${ro.hardware}.vmx /fstab.${ro.hardware}
+    symlink /sys.part.rc.vmx /sys.part.rc
+
+on init
+
+on early-fs
+
+on fs
+
+on post-fs
+
+on post-fs-data
+
+on early-boot
+
+on boot
+

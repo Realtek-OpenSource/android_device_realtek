@@ -1,0 +1,4 @@
+allow hal_tv_cec_default hdmi_device:chr_file { read write ioctl open getattr };
+allow hal_tv_cec_default sysfs_switch:file { read open getattr };
+allow hal_tv_cec_default sysfs_switch:dir search;
+allow hal_tv_cec_default self:netlink_kobject_uevent_socket { create read bind setopt };

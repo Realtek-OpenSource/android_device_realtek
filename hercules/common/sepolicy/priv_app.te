@@ -1,0 +1,10 @@
+get_prop(priv_app, media_prop)
+get_prop(priv_app, rtk_prop)
+get_prop(priv_app, net_dns_prop)
+
+allow priv_app mediadrmserver_exec:file r_file_perms;
+allow priv_app { zygote device }:dir r_dir_perms;
+allow priv_app { proc_interrupts proc_modules wifi_prop proc_stat proc_uptime sysfs_android_usb }:file r_file_perms;
+
+# Never allow 
+#allow priv_app { zygote proc sysfs }:file r_dir_perms;
